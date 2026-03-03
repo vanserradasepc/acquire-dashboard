@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acquire Interactive - Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',sans-serif;background:#0e1017;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+:root{--yellow:#e8d840;--green:#4caf50;--red:#f44336;--orange:#ff9800;--cyan:#00bcd4;--card:#1a1c22;--sidebar-w:60px}
+
+/* ══ CONCEPT SWITCHER ══ */
+.concept-switcher{position:fixed;top:0;left:0;right:0;height:42px;background:#0a0b10;border-bottom:1px solid #1e2028;display:flex;align-items:center;justify-content:center;gap:8px;z-index:999}
+.concept-btn{padding:5px 16px;border-radius:20px;border:1px solid #2a2c38;background:transparent;color:#666;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.3px}
+.concept-btn:hover{border-color:#555;color:#aaa}
+.concept-btn.active{background:var(--yellow);border-color:var(--yellow);color:#111}
+.concept-label{font-size:11px;color:#444;font-weight:500;margin-right:4px}
+
+/* offset body for switcher */
+.app-wrap{display:flex;flex:1;margin-top:42px}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;left:0;top:42px;height:calc(100vh - 42px);z-index:100;background:#13151c;border-right:1px solid #1e2028;display:flex;flex-direction:column;align-items:center;padding:0}
+.sb-top{width:100%;display:flex;align-items:center;justify-content:center;padding:14px 0 10px}
+.sb-hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer}
+.sb-hamburger span{display:block;width:18px;height:2px;background:#555;border-radius:2px}
+.sb-logo{display:flex;align-items:center;justify-content:center;padding:6px 0 10px}
+.sb-nav{display:flex;flex-direction:column;align-items:center;width:100%;gap:2px;flex:1}
+.sb-icon{width:44px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:.15s}
+.sb-icon:hover{background:#1e2028}
+.sb-icon svg{width:20px;height:20px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sb-icon.yellow svg{stroke:#e8d840}
+.sb-spacer{flex:1}
+.sb-bottom{width:100%;display:flex;flex-direction:column;align-items:center;padding:8px 0 10px;gap:4px;border-top:1px solid #1e2028}
+.sb-logout svg{width:18px;height:18px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sb-logout{width:44px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:calc(100vh - 42px)}
+
+/* ══ SCREENS ══ */
+.screen{display:none;flex:1;flex-direction:column}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeIn .2s ease}
+
+/* ══ PARTNERS HEADER ══ */
+.partners-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#13151c;border-bottom:1px solid #1e2028}
+.partners-title{font-size:20px;font-weight:700;color:#fff}
+.partners-header-right{display:flex;align-items:center;gap:12px}
+.btn-close-filters{display:flex;align-items:center;gap:4px;background:none;border:none;color:#888;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer}
+.btn-add{background:var(--yellow);color:#111;border:none;padding:8px 20px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+.collapse-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:#888;cursor:pointer}
+.tog{width:32px;height:16px;background:#2a2c35;border-radius:8px;position:relative}
+.tog::after{content:'';position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:#555}
+
+/* Filters */
+.filters-bar{background:#13151c;padding:14px 24px;border-bottom:1px solid #1e2028;display:flex;align-items:flex-end;gap:16px}
+.filter-group{display:flex;flex-direction:column;gap:5px;flex:1}
+.filter-label{font-size:11px;color:#666;font-weight:500}
+.filter-input{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 12px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%}
+.filter-select-wrap{position:relative;flex:1}
+.filter-select{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 30px 8px 12px;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%;appearance:none;cursor:pointer}
+.filter-sel-arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#555;pointer-events:none;font-size:18px}
+.filters-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-reset{background:none;border:1px solid #2a2c35;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;padding:8px 18px;border-radius:6px;cursor:pointer}
+.btn-apply{background:var(--yellow);color:#111;border:none;padding:8px 22px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+
+/* Table toolbar */
+.table-toolbar{display:flex;align-items:center;justify-content:flex-end;padding:8px 24px;gap:10px;border-bottom:1px solid #1e2028}
+.toolbar-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px;transition:.15s}
+.toolbar-icon:hover{background:#1e2028}
+.toolbar-icon .material-icons,.toolbar-icon .material-icons-outlined{font-size:18px;color:#666}
+.view-settings{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;color:#888;padding:4px 8px;border-radius:6px;transition:.15s}
+.view-settings:hover{background:#1e2028;color:#ccc}
+.view-settings .material-icons{font-size:16px}
+
+/* Table */
+.table-wrap{flex:1;overflow:auto;padding-bottom:52px}
+.partners-table{width:100%;border-collapse:collapse;min-width:1400px}
+.partners-table th{padding:10px 12px;font-size:11px;font-weight:600;color:#555;text-align:left;border-bottom:1px solid #1e2028;white-space:nowrap;background:#13151c;position:sticky;top:0;z-index:10}
+.partners-table th:first-child{padding-left:24px}
+.partners-table td{padding:9px 12px;font-size:12.5px;color:#bbb;border-bottom:1px solid #17191f;white-space:nowrap}
+.partners-table td:first-child{padding-left:24px}
+.partners-table tr:hover td{background:#161820}
+.partner-link{color:#fff;font-weight:600;cursor:pointer;transition:.15s}
+.partner-link:hover{color:var(--yellow)}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.status-dot.green{background:#4caf50}.status-dot.red{background:#f44336}
+.action-cell{display:flex;align-items:center;gap:2px;justify-content:flex-end}
+.act-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;background:none;border:none;transition:.15s}
+.act-btn:hover{background:#1e2028}
+.act-btn .material-icons,.act-btn .material-icons-outlined{font-size:16px;color:#555}
+.act-btn.trend-btn .material-icons{color:#00bcd4}
+.act-btn.trend-btn:hover .material-icons{color:#26d4ec}
+.act-btn.del .material-icons{color:#f44336;opacity:.5}
+.act-btn.del:hover .material-icons{opacity:1}
+
+/* Pagination */
+.pagination{position:fixed;bottom:0;left:var(--sidebar-w);right:0;background:#13151c;border-top:1px solid #1e2028;padding:9px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;z-index:50}
+.rows-per-page{display:flex;align-items:center;gap:6px;font-size:12px;color:#777}
+.rows-select{background:#1a1c22;border:1px solid #2a2c35;border-radius:5px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:12px;padding:3px 20px 3px 8px;appearance:none;cursor:pointer;outline:none}
+.page-info{font-size:12px;color:#777}
+.page-arrows{display:flex;gap:4px}
+.page-arrow{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;border:none;background:none}
+.page-arrow:hover{background:#1e2028}
+.page-arrow .material-icons{font-size:18px;color:#666}
+
+/* ══ ACQUIRE HEADER ══ */
+.acq-header{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid #1e2028;background:#13151c}
+.acq-header-left{display:flex;align-items:center;gap:10px}
+.back-btn{background:none;border:none;color:#888;cursor:pointer;display:flex;align-items:center;padding:4px}
+.back-btn:hover{color:#fff}
+.back-btn .material-icons{font-size:20px}
+.acq-title{font-size:18px;font-weight:700;color:#fff}
+.trend-icon-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid #2a2c38;background:#1a1c22;cursor:pointer;transition:.2s;margin-left:4px}
+.trend-icon-btn:hover{border-color:#00bcd4;background:#0e2a30}
+.trend-icon-btn .material-icons{font-size:16px;color:#00bcd4}
+.btn-save{background:var(--yellow);color:#111;border:none;padding:9px 26px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+
+/* ACQ TABS */
+.acq-nav{display:flex;border-bottom:1px solid #1e2028;padding:0 24px;background:#13151c;overflow-x:auto}
+.acq-nav::-webkit-scrollbar{height:0}
+.acq-tab{padding:12px 18px;font-size:12.5px;font-weight:500;color:#666;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+.acq-tab:hover{color:#ccc}
+.acq-tab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+
+/* Tab pages */
+.tab-page{display:none;padding:24px 28px;flex:1;overflow-y:auto}
+.tab-page.active{display:block}
+
+/* HOME fields */
+.section-heading{font-size:15px;font-weight:700;color:#fff;margin-bottom:18px}
+.detail-block{background:#1a1c22;border-radius:10px;padding:20px 24px}
+.field-row{display:grid;gap:12px;padding:6px 0}
+.field-row.c2{grid-template-columns:1fr 1fr}
+.field-row.c3{grid-template-columns:1fr 1fr 1fr}
+.field-row.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+.field-cell{min-width:0}
+.f-label{font-size:11px;color:#666;font-weight:500;margin-bottom:4px;padding-left:2px;display:flex;align-items:center;gap:4px}
+.f-input-box{background:#1e2028;border:1px solid #2a2c38;border-radius:8px;padding:10px 14px;min-height:46px;display:flex;align-items:center}
+.f-input-box:hover{border-color:#383a48}
+.f-val{font-size:13.5px;color:#d0d0d8;font-weight:500;word-break:break-all;width:100%}
+.f-val.empty{color:#383a48}
+.f-val .flag{font-size:15px;margin-right:4px}
+.sel-row{display:flex;align-items:center;justify-content:space-between;width:100%}
+.sel-row .material-icons{font-size:18px;color:#555}
+.status-active{display:inline-flex;align-items:center;background:#1a2e1a;color:#4caf50;border:1px solid #2a4a2a;border-radius:4px;padding:2px 10px;font-size:12px;font-weight:600}
+
+/* ══ TRENDS PAGE ══ */
+.trends-page{display:none;padding:24px 28px;flex:1;overflow-y:auto}
+.trends-page.active{display:block}
+.trends-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.trends-back-label{display:flex;align-items:center;gap:8px;cursor:pointer;color:#888;font-size:13px;font-weight:500}
+.trends-back-label:hover{color:#fff}
+.trends-back-label .material-icons{font-size:18px}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.kpi-card{background:var(--card);border-radius:10px;padding:20px 24px;position:relative;overflow:hidden}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.kpi-lbl{font-size:12px;color:#aaa;font-weight:500;margin-bottom:8px}
+.kpi-val{font-size:28px;font-weight:700}
+.kpi-val.yellow{color:var(--yellow)}.kpi-val.cyan{color:var(--cyan)}.kpi-val.red{color:var(--red)}
+.kpi-badge{position:absolute;top:20px;right:20px;display:flex;align-items:center;gap:4px;border:1px solid;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600}
+.kpi-badge.up{color:var(--green);border-color:#2a5a2a}
+.kpi-icon{position:absolute;top:18px;right:20px}
+.kpi-sub{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.kpi-sub-item{display:flex;align-items:center;gap:6px;font-size:11px}
+.kpi-bubble{background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;color:#fff}
+.kpi-pct{font-weight:600}.kpi-pct.pos{color:var(--green)}.kpi-pct.neg{color:var(--red)}.kpi-pct.zero{color:#aaa}
+.mini-bars{display:flex;align-items:flex-end;gap:4px;height:44px;position:absolute;right:20px;top:16px}
+.mini-bar{width:14px;border-radius:2px 2px 0 0;transition:height .6s ease}
+.chart-section{background:var(--card);border-radius:10px;padding:24px}
+.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chart-title{font-size:14px;font-weight:600;color:#ccc}
+.chart-legend{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:18px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;cursor:pointer;user-select:none}
+.legend-cb{width:16px;height:16px;border-radius:3px;border:2px solid #555;display:flex;align-items:center;justify-content:center;background:#3a6a3a}
+.legend-cb.off{background:#2a2a2a;border-color:#444}
+.legend-cb .material-icons{font-size:11px;color:#fff}
+.legend-dot{width:10px;height:10px;border-radius:50%;border:2px solid}
+.chart-wrap{position:relative;height:280px}
+.sum-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-top:20px}
+.sum-card{background:#181818;border-radius:10px;padding:18px 20px}
+.sum-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sum-dot{width:16px;height:16px;border-radius:50%}
+.sum-val{font-size:22px;font-weight:700;margin-bottom:10px}
+.sum-compare{display:flex;gap:24px}
+.sum-col{display:flex;flex-direction:column;gap:2px}
+.sum-col-lbl{font-size:10px;color:#666;font-weight:500}
+.sum-col-pct{font-size:12px;font-weight:700}
+.sum-col-pct.pos{color:var(--green)}.sum-col-pct.neg{color:var(--red)}.sum-col-pct.zero{color:#aaa}
+
+.feedback-btn{position:fixed;bottom:16px;left:70px;background:#3b5bdb;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:300}
+.feedback-btn .material-icons{font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- ══ CONCEPT SWITCHER ══ -->
+<div class="concept-switcher">
+  <span class="concept-label">Concept:</span>
+  <button class="concept-btn active" onclick="setConcept(1,this)">① Trends as tab</button>
+  <button class="concept-btn" onclick="setConcept(2,this)">② Trends via icon in title</button>
+  <button class="concept-btn" onclick="setConcept(3,this)">③ Trends via icon in table</button>
+</div>
+
+<div class="app-wrap">
+
+<!-- ══ SIDEBAR ══ -->
+<div class="sidebar">
+  <div class="sb-top"><div class="sb-hamburger"><span></span><span></span><span></span></div></div>
+  <div class="sb-logo">
+    <svg viewBox="0 0 48 48" fill="none" style="width:32px;height:32px">
+      <path d="M10 6 C6 6 4 8 4 12 L4 36 C4 40 6 42 10 42 C12 42 14 41 16 39 L38 27 C41 25 42 24 42 24 C42 24 41 23 38 21 L16 9 C14 7 12 6 10 6Z" fill="#e8d840"/>
+      <path d="M12 13 L12 35 L32 24 Z" fill="#13151c"/>
+    </svg>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V11.5z"/><path d="M9 22V13h6v9"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="5" y1="20" x2="5" y2="13"/><line x1="10" y1="20" x2="10" y2="7"/><line x1="15" y1="20" x2="15" y2="10"/><line x1="20" y1="20" x2="20" y2="15"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="4" y1="8" x2="20" y2="8"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="10" y1="18" x2="14" y2="18"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><line x1="7" y1="11.2" x2="17" y2="6.8"/><line x1="7" y1="12.8" x2="17" y2="17.2"/></svg></div>
+    <div class="sb-icon yellow"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+    <div class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="18" r="1.3" fill="#484a55" stroke="none"/></svg></div>
+    <div class="sb-spacer"></div>
+  </div>
+  <div class="sb-bottom">
+    <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5a7a4a,#3d5c32);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer">VS</div>
+    <div class="sb-logout"><svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5M21 12H9"/><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+  <!-- ════════════ PARTNERS SCREEN ════════════ -->
+  <div class="screen active" id="screen-partners">
+    <div class="partners-header">
+      <div class="partners-title">Partners</div>
+      <div class="partners-header-right">
+        <div class="collapse-toggle"><div class="tog"></div><span style="font-size:12px;color:#888">Collapse</span></div>
+        <button class="btn-close-filters"><span class="material-icons" style="font-size:14px">close</span> Close Filters</button>
+        <button class="btn-add">Add</button>
+      </div>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group"><span class="filter-label">Partner</span><input class="filter-input" type="text"></div>
+      <div class="filter-group"><span class="filter-label">Status</span>
+        <div class="filter-select-wrap"><select class="filter-select"><option value="">— select —</option><option>Active</option><option>Inactive</option></select><span class="material-icons filter-sel-arrow">expand_more</span></div>
+      </div>
+      <div class="filters-actions"><button class="btn-reset">Reset</button><button class="btn-apply">Apply</button></div>
+    </div>
+    <div class="table-toolbar">
+      <div class="toolbar-icon"><span class="material-icons">refresh</span></div>
+      <div class="toolbar-icon"><span class="material-icons">filter_list</span></div>
+      <div class="view-settings"><span class="material-icons">tune</span> View Settings</div>
+      <div class="toolbar-icon"><span class="material-icons">view_column</span></div>
+      <div class="toolbar-icon"><span class="material-icons">download</span></div>
+    </div>
+    <div class="table-wrap">
+      <table class="partners-table">
+        <thead>
+          <tr>
+            <th>Name</th><th>Stat...</th><th>Contact Name</th><th>Leads</th><th>Dupe %</th><th>Sold</th><th>Sold %</th><th>Errors</th><th>Errors %</th><th>Timeouts</th><th>Timeouts %</th><th>Redirect %</th><th>Avg Res Time</th><th>Avg Appr Time</th>
+            <th style="text-align:right;padding-right:24px">Action</th>
+          </tr>
+        </thead>
+        <tbody id="partners-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div class="rows-per-page">Rows per page: <div style="position:relative"><select class="rows-select"><option>100</option><option>50</option><option>25</option></select><span class="material-icons" style="position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:13px;color:#555;pointer-events:none">expand_more</span></div></div>
+      <div class="page-info">1–100 of 488</div>
+      <div class="page-arrows">
+        <button class="page-arrow" disabled><span class="material-icons">chevron_left</span></button>
+        <button class="page-arrow"><span class="material-icons">chevron_right</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACQUIRE SCREEN (C1 & C2) ════════════ -->
+  <div class="screen" id="screen-acquire">
+
+    <div id="acq-header-c1" class="acq-header">
+      <div class="acq-header-left">
+        <button class="back-btn" onclick="goBack()"><span class="material-icons">arrow_back</span></button>
+        <span class="acq-title">Acquire Interactive</span>
+      </div>
+      <button class="btn-save">Save</button>
+    </div>
+
+    <div id="acq-header-c2" class="acq-header" style="display:none">
+      <div class="acq-header-left">
+        <button class="back-btn" onclick="goBack()"><span class="material-icons">arrow_back</span></button>
+        <span class="acq-title">Acquire Interactive</span>
+        <div class="trend-icon-btn" title="View Trends" onclick="openTrendsC2()">
+          <span class="material-icons">show_chart</span>
+        </div>
+      </div>
+      <button class="btn-save">Save</button>
+    </div>
+
+    <div id="acq-tabs-c1" class="acq-nav">
+      <div class="acq-tab active" onclick="showTab('home',this)">Home</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Conditions</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Checkers</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Deduplications</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Schedule</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Campaign Capacity Groups</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Users</div>
+      <div class="acq-tab" onclick="showTab('home',this)">Additional Feature</div>
+      <div class="acq-tab" onclick="showTab('trends',this)">Trends</div>
+    </div>
+
+    <div id="acq-tabs-c2" class="acq-nav" style="display:none">
+      <div class="acq-tab active">Home</div>
+      <div class="acq-tab">Conditions</div>
+      <div class="acq-tab">Checkers</div>
+      <div class="acq-tab">Deduplications</div>
+      <div class="acq-tab">Schedule</div>
+      <div class="acq-tab">Campaign Capacity Groups</div>
+      <div class="acq-tab">Users</div>
+      <div class="acq-tab">Additional Feature</div>
+    </div>
+
+    <!-- HOME TAB -->
+    <div class="tab-page active" id="tab-home">
+      <div class="section-heading">Basic details</div>
+      <div class="detail-block">
+        <div class="field-row c2">
+          <div class="field-cell"><div class="f-label">Name</div><div class="f-input-box"><span class="f-val">Acquire Interactive</span></div></div>
+          <div class="field-cell"><div class="f-label">Description</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+        </div>
+        <div class="field-row c3">
+          <div class="field-cell"><div class="f-label">Allow Remarketing</div><div class="f-input-box"><div class="sel-row"><span class="f-val">All</span><span class="material-icons">expand_more</span></div></div></div>
+          <div class="field-cell"><div class="f-label">Delay Value <span class="material-icons-outlined" style="font-size:13px;color:#555">info</span></div><div class="f-input-box"><span class="f-val">PT0S</span></div></div>
+          <div class="field-cell"><div class="f-label">Status</div><div class="f-input-box"><div class="sel-row"><span class="status-active">Active</span><span class="material-icons">expand_more</span></div></div></div>
+        </div>
+        <div class="field-row c4">
+          <div class="field-cell"><div class="f-label">Contact Name</div><div class="f-input-box"><span class="f-val">Thomas Littlejohn</span></div></div>
+          <div class="field-cell"><div class="f-label">Contact Title</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+          <div class="field-cell"><div class="f-label">Contact Email</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+          <div class="field-cell"><div class="f-label">Contact Skype</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+        </div>
+        <div class="field-row c3">
+          <div class="field-cell"><div class="f-label">Customer Service Phone</div><div class="f-input-box"><span class="f-val"><span class="flag">🇺🇸</span>+1 800 454 5904</span></div></div>
+          <div class="field-cell"><div class="f-label">Customer Service Email</div><div class="f-input-box"><span class="f-val">info@acquireinteractive.com</span></div></div>
+          <div class="field-cell"><div class="f-label">Customer Service Address</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+        </div>
+        <div class="field-row c3">
+          <div class="field-cell"><div class="f-label">Customer Service Postal Code</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+          <div class="field-cell"><div class="f-label">Customer Service City</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+          <div class="field-cell"><div class="f-label">Customer Service State</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+        </div>
+        <div class="field-row c4">
+          <div class="field-cell"><div class="f-label">Billing Contact Name</div><div class="f-input-box"><span class="f-val">Acquire Interactive, LLC</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing Email</div><div class="f-input-box"><span class="f-val">Accounting@Speedwellholdings.com</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing Company Name</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing Phone</div><div class="f-input-box"><span class="f-val"><span class="flag">🇺🇸</span>+1</span></div></div>
+        </div>
+        <div class="field-row c4">
+          <div class="field-cell"><div class="f-label">Billing Address</div><div class="f-input-box"><span class="f-val">325 E. Warm Springs Rd, Suite 101</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing Postal Code</div><div class="f-input-box"><span class="f-val">89119</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing City</div><div class="f-input-box"><span class="f-val">Las Vegas</span></div></div>
+          <div class="field-cell"><div class="f-label">Billing State</div><div class="f-input-box"><span class="f-val">NV</span></div></div>
+        </div>
+        <div class="field-row">
+          <div class="field-cell"><div class="f-label">Notes</div><div class="f-input-box" style="align-items:flex-start;min-height:68px"><span class="f-val">Account Manager: Michelle<br>Net 15</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRENDS TAB (C1 only) -->
+    <div class="tab-page" id="tab-trends">
+      <div id="trends-content-c1"></div>
+    </div>
+
+  </div>
+
+  <!-- ════════════ TRENDS FULLSCREEN (C2 & C3) ════════════ -->
+  <div class="screen" id="screen-trends-full">
+    <div class="acq-header">
+      <div class="acq-header-left">
+        <button class="back-btn" id="trends-back-btn"><span class="material-icons">arrow_back</span></button>
+        <span class="acq-title" id="trends-full-title">Acquire Interactive — Trends</span>
+      </div>
+    </div>
+    <div class="trends-page active" id="trends-full-content"></div>
+  </div>
+
+</div>
+</div>
+
+<button class="feedback-btn"><span class="material-icons">chat_bubble</span>Feedback</button>
+
+<script>
+const partners=[
+  {name:'LeadsMarket',st:'green',contact:'Michael Parshin',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Acquire Interactive',st:'green',contact:'Thomas Littlejohn',leads:222840,dupe:'0.79%',sold:1057,soldP:'0.47%',err:74,errP:'0.01%',to:98,toP:'0.01%',red:'71.05%',res:'1.33s',appr:'8.89s'},
+  {name:'LeadFlash',st:'red',contact:'Matthew Sclier',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'RoundSky',st:'green',contact:'Nazar Brizinov',leads:221408,dupe:'5.29%',sold:4569,soldP:'2.06%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'51.52%',res:'0.27s',appr:'1.30s'},
+  {name:'T3Leads',st:'red',contact:'Hrant Minasyan',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Dot818',st:'green',contact:'Gerald Lopez',leads:188111,dupe:'36.10%',sold:4510,soldP:'2.40%',err:30,errP:'0.01%',to:254,toP:'0.06%',red:'70.51%',res:'2.68s',appr:'3.92s'},
+  {name:'LeadToro',st:'red',contact:'Eduardo Tavel',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'ArrowShade',st:'red',contact:'Genel Ilyasova',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'DevWire (aka Dakota)',st:'red',contact:'Jacob (Jake) Weeks',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Lender Edge',st:'green',contact:'Ethan Taub',leads:42116,dupe:'0.00%',sold:29,soldP:'0.07%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'68.97%',res:'0.46s',appr:'4.82s'},
+  {name:'SpeedyCash',st:'green',contact:'Jamie Tuchalski',leads:8462,dupe:'50.20%',sold:567,soldP:'6.70%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'86.77%',res:'0.76s',appr:'1.41s'},
+  {name:'Revival',st:'green',contact:'Chris Olsen',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'NCR Financial',st:'red',contact:'Scott Gerardi',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Power Finance',st:'red',contact:'Jody Boyd',leads:1632,dupe:'0.00%',sold:52,soldP:'3.19%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'84.62%',res:'3.48s',appr:'1.27s'},
+  {name:'LoanMe',st:'red',contact:'Marissa Noriega',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'CashCall',st:'red',contact:'Violet Yebeyan',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Sanco Business',st:'red',contact:'Eddie Sandoval',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Intimate Interactive',st:'green',contact:'Jason Chang',leads:75494,dupe:'40.20%',sold:240,soldP:'0.32%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'70.00%',res:'1.28s',appr:'5.12s'},
+  {name:'CuraDebt',st:'red',contact:'Eric Pemper',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Global Personals',st:'green',contact:'Abe Smiz',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+  {name:'Trend Capital',st:'red',contact:'Sarah Reardon',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+];
+
+let currentConcept=1;
+let chartInited=false;
+let chartInstance=null;
+
+function setConcept(n,btn){
+  currentConcept=n;
+  document.querySelectorAll('.concept-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  showScreen('partners');
+  buildTable();
+  document.querySelectorAll('.acq-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('#acq-tabs-c1 .acq-tab').classList.add('active');
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-home').classList.add('active');
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function buildTable(){
+  const tbody=document.getElementById('partners-tbody');
+  tbody.innerHTML='';
+  partners.forEach(p=>{
+    const isAcquire=p.name==='Acquire Interactive';
+    const showTrendIcon=currentConcept===3;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><span class="partner-link" ${isAcquire?'onclick="openAcquire()"':''}>${p.name}</span></td>
+      <td><span class="status-dot ${p.st}"></span></td>
+      <td>${p.contact}</td>
+      <td>${p.leads?p.leads.toLocaleString():0}</td>
+      <td>${p.dupe}</td><td>${p.sold}</td><td>${p.soldP}</td>
+      <td>${p.err}</td><td>${p.errP}</td>
+      <td>${p.to}</td><td>${p.toP}</td>
+      <td>${p.red}</td><td>${p.res}</td><td>${p.appr}</td>
+      <td style="text-align:right;padding-right:24px">
+        <div class="action-cell">
+          <button class="act-btn" title="Info"><span class="material-icons-outlined" style="font-size:16px;color:#555">info</span></button>
+          ${showTrendIcon?`<button class="act-btn trend-btn" title="Trends" onclick="openTrendsFromTable('${p.name}')"><span class="material-icons" style="font-size:16px;color:#00bcd4">show_chart</span></button>`:''}
+          <button class="act-btn" title="Edit"><span class="material-icons" style="font-size:16px;color:#555">edit</span></button>
+          <button class="act-btn del" title="Delete"><span class="material-icons" style="font-size:16px">delete</span></button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function openAcquire(){
+  showScreen('acquire');
+  document.getElementById('acq-header-c1').style.display=currentConcept===1?'flex':'none';
+  document.getElementById('acq-header-c2').style.display=currentConcept>=2?'flex':'none';
+  document.getElementById('acq-tabs-c1').style.display=currentConcept===1?'flex':'none';
+  document.getElementById('acq-tabs-c2').style.display=currentConcept>=2?'flex':'none';
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-home').classList.add('active');
+  if(currentConcept===1){
+    document.querySelectorAll('#acq-tabs-c1 .acq-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelector('#acq-tabs-c1 .acq-tab').classList.add('active');
+  }
+}
+
+function goBack(){showScreen('partners');}
+
+function showTab(id,tab){
+  document.querySelectorAll('#acq-tabs-c1 .acq-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active');
+  if(id==='trends'){
+    const el=document.getElementById('tab-trends');
+    el.classList.add('active');
+    if(!chartInited){
+      renderTrendsHTML('trends-content-c1');
+      initChart('trendsChart1');
+      chartInited=true;
+    }
+    animateCounters();animateBars('bar1','bar2','bar3');
+  } else {
+    document.getElementById('tab-home').classList.add('active');
+  }
+}
+
+function openTrendsC2(){
+  document.getElementById('trends-full-title').textContent='Acquire Interactive — Trends';
+  document.getElementById('trends-back-btn').onclick=()=>{showScreen('acquire');};
+  renderTrendsHTML('trends-full-content');
+  showScreen('trends-full');
+  setTimeout(()=>{
+    initChart('trendsChartFull');
+    animateCounters();animateBars('barF1','barF2','barF3');
+  },100);
+}
+
+function openTrendsFromTable(name){
+  document.getElementById('trends-full-title').textContent=name+' — Trends';
+  document.getElementById('trends-back-btn').onclick=()=>{showScreen('partners');};
+  renderTrendsHTML('trends-full-content');
+  showScreen('trends-full');
+  setTimeout(()=>{
+    initChart('trendsChartFull');
+    animateCounters();animateBars('barF1','barF2','barF3');
+  },100);
+}
+
+function renderTrendsHTML(containerId){
+  const c=document.getElementById(containerId);
+  const isC1=containerId==='trends-content-c1';
+  const sfx=isC1?'c1':'Full';
+  c.innerHTML=`
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-lbl">Today's total revenue</div><div class="kpi-val yellow"><span class="count-up" data-target="3029.01" data-prefix="$" data-decimals="2">$0.00</span></div><div class="mini-bars"><div class="mini-bar" id="bar${sfx}1" style="height:0;background:var(--yellow)"></div><div class="mini-bar" id="bar${sfx}2" style="height:0;background:var(--green)"></div><div class="mini-bar" id="bar${sfx}3" style="height:0;background:var(--red)"></div></div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Yesterday</div><div class="kpi-val"><span class="count-up" data-target="2731.22" data-prefix="$" data-decimals="2">$0.00</span></div><div class="kpi-badge up"><span class="material-icons" style="font-size:13px">arrow_upward</span>10.9%</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Previous week</div><div class="kpi-val"><span class="count-up" data-target="2966.84" data-prefix="$" data-decimals="2">$0.00</span></div><div class="kpi-badge up"><span class="material-icons" style="font-size:13px">arrow_upward</span>2.1%</div></div>
+  </div>
+  <div class="kpi-row" style="margin-bottom:20px">
+    <div class="kpi-card"><div class="kpi-lbl">EPL</div><div class="kpi-val red"><span class="count-up" data-target="0.02" data-decimals="2">0.00</span></div><div class="kpi-icon"><span class="material-icons-outlined" style="color:#f44336;font-size:38px">info</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">0.01</span><span class="kpi-pct pos">100%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">0.02</span><span class="kpi-pct zero">0%</span></div></div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Applications</div><div class="kpi-val cyan"><span class="count-up" data-target="191597" data-decimals="0">0</span></div><div class="kpi-icon"><span class="material-icons" style="color:var(--cyan);font-size:38px">trending_up</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">202,429</span><span class="kpi-pct neg">-5.35%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">188,007</span><span class="kpi-pct pos">1.91%</span></div></div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Redirect Rate</div><div class="kpi-val yellow"><span class="count-up" data-target="71.93" data-suffix="%" data-decimals="2">0.00%</span></div><div class="kpi-icon"><span class="material-icons" style="color:var(--yellow);font-size:38px">swap_horiz</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">72.12%</span><span class="kpi-pct neg">-0.26%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">69.88%</span><span class="kpi-pct pos">2.93%</span></div></div></div>
+  </div>
+  <div class="chart-section">
+    <div class="chart-hdr"><div class="chart-title">2 Weeks (Applications / Revenue / Redirect / EPL)</div><span class="material-icons-outlined" style="color:#555;font-size:18px;cursor:pointer">info</span></div>
+    <div class="chart-legend">
+      <div class="legend-item" onclick="toggleDS(0,'cb0${sfx}')"><div class="legend-cb" id="cb0${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#ff9800;border-color:#ff9800"></div><span>Applications</span></div>
+      <div class="legend-item" onclick="toggleDS(1,'cb1${sfx}')"><div class="legend-cb" id="cb1${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#8bc34a;border-color:#8bc34a"></div><span>Revenue</span></div>
+      <div class="legend-item" onclick="toggleDS(2,'cb2${sfx}')"><div class="legend-cb" id="cb2${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#00bcd4;border-color:#00bcd4"></div><span>Redirect</span></div>
+      <div class="legend-item" onclick="toggleDS(3,'cb3${sfx}')"><div class="legend-cb" id="cb3${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#f44336;border-color:#f44336"></div><span>EPL</span></div>
+    </div>
+    <div class="chart-wrap"><canvas id="trendsChart${sfx}"></canvas></div>
+    <div class="sum-row">
+      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#ff9800"></div><span class="material-icons" style="color:#555;font-size:20px">arrow_forward</span></div><div class="sum-val">191,597</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+1.91%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+2.22%</span></div></div></div>
+      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#8bc34a"></div><span class="material-icons" style="color:var(--green);font-size:20px">trending_up</span></div><div class="sum-val">$3,029.01</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+2.10%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+15.55%</span></div></div></div>
+      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#00bcd4"></div><span class="material-icons" style="color:var(--red);font-size:20px">trending_down</span></div><div class="sum-val">71.93%</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+2.93%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct neg">-3.29%</span></div></div></div>
+      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#f44336"></div><span class="material-icons" style="color:var(--green);font-size:20px">trending_up</span></div><div class="sum-val">$0.02</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct zero">+0.00%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+100.00%</span></div></div></div>
+    </div>
+  </div>`;
+}
+
+const chartData={
+  labels:['17Feb','18Feb','19Feb','20Feb','21Feb','22Feb','23Feb','24Feb','25Feb','26Feb','27Feb','28Feb','01Mar','02Mar','03Mar'],
+  app:[190000,245000,210000,205000,200000,195000,145000,140000,185000,178000,215000,165000,125000,200000,191597],
+  rev:[2200,2800,2500,2450,2300,2250,1800,1750,2100,2050,2400,1900,1600,2800,3029],
+  red:[75,78,76,75,77,74,73,72,74,73,76,71,70,76,71.93],
+  epl:[0.01,0.015,0.012,0.013,0.01,0.012,0.008,0.009,0.015,0.013,0.018,0.011,0.009,0.02,0.02]
+};
+
+function initChart(canvasId){
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+  const canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  chartInstance=new Chart(canvas.getContext('2d'),{
+    type:'line',
+    data:{labels:chartData.labels,datasets:[
+      {label:'Applications',data:chartData.app,borderColor:'#ff9800',backgroundColor:'transparent',borderWidth:2.5,pointBackgroundColor:'#ff9800',pointRadius:5,tension:.4,yAxisID:'y'},
+      {label:'Revenue',data:chartData.rev.map(v=>v*55),borderColor:'#8bc34a',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#8bc34a',pointRadius:5,tension:.4,yAxisID:'y'},
+      {label:'Redirect',data:chartData.red.map(v=>v*2700),borderColor:'#00bcd4',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#00bcd4',pointRadius:5,tension:.4,yAxisID:'y'},
+      {label:'EPL',data:chartData.epl.map(v=>v*5000),borderColor:'#f44336',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#f44336',pointRadius:4,tension:.4,yAxisID:'y'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400,easing:'easeInOutQuart'},interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#2a2a2a',borderColor:'#444',borderWidth:1,titleColor:'#ccc',bodyColor:'#fff',padding:10,
+        callbacks:{label(c){const i=c.datasetIndex,r=c.raw;
+          if(i===0)return` Applications: ${Math.round(r).toLocaleString()}`;
+          if(i===1)return` Revenue: $${(r/55).toFixed(2)}`;
+          if(i===2)return` Redirect: ${(r/2700).toFixed(2)}%`;
+          return` EPL: $${(r/5000).toFixed(3)}`;
+        }}}},
+      scales:{y:{display:true,grid:{color:'#252525'},ticks:{color:'#555',font:{family:'Montserrat',size:10},callback(v){return v>=1000?(v/1000).toFixed(0)+'k':v}}},
+        x:{grid:{color:'#252525'},ticks:{color:'#555',font:{family:'Montserrat',size:10}}}}}
+  });
+}
+
+function toggleDS(idx,cbId){
+  if(!chartInstance)return;
+  const meta=chartInstance.getDatasetMeta(idx);meta.hidden=!meta.hidden;
+  const cb=document.getElementById(cbId);if(cb)cb.classList.toggle('off',meta.hidden);
+  chartInstance.update();
+}
+
+function animateCounters(){
+  document.querySelectorAll('.count-up').forEach(el=>{
+    const target=parseFloat(el.dataset.target),prefix=el.dataset.prefix||'',suffix=el.dataset.suffix||'',dec=parseInt(el.dataset.decimals)||0;
+    const dur=1600,start=performance.now();
+    function step(now){
+      const p=Math.min((now-start)/dur,1),ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2,val=target*ease;
+      el.textContent=prefix+(dec>0?val.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):Math.round(val).toLocaleString('en-US'))+suffix;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+function animateBars(b1,b2,b3){
+  [{id:b1,h:'30px'},{id:b2,h:'44px'},{id:b3,h:'22px'}].forEach((t,i)=>setTimeout(()=>{const el=document.getElementById(t.id);if(el)el.style.height=t.h;},300+i*120));
+}
+
+buildTable();
+</script>
+</body>
+</html>
