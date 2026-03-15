@@ -3,617 +3,609 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acquire Interactive - Concepts</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Montserrat',sans-serif;background:#0e1017;color:#fff;min-height:100vh;display:flex;flex-direction:column}
-:root{--yellow:#e8d840;--green:#4caf50;--red:#f44336;--orange:#ff9800;--cyan:#00bcd4;--card:#1a1c22;--sidebar-w:60px}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Montserrat',sans-serif;background:#0e1017;color:#fff;display:flex}
+:root{--yellow:#e8d840;--green:#4caf50;--red:#f44336;--cyan:#00bcd4;--card:#1a1c22;--sw:60px}
 
-.concept-switcher{position:fixed;top:0;left:0;right:0;height:42px;background:#0a0b10;border-bottom:1px solid #1e2028;display:flex;align-items:center;justify-content:center;gap:8px;z-index:999}
-.concept-btn{padding:5px 16px;border-radius:20px;border:1px solid #2a2c38;background:transparent;color:#666;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.3px}
-.concept-btn:hover{border-color:#555;color:#aaa}
-.concept-btn.active{background:var(--yellow);border-color:var(--yellow);color:#111}
-.concept-hint{display:flex;align-items:center;gap:6px;margin-right:8px}
-.hint-text{font-size:11px;color:#e8d840;font-weight:600;white-space:nowrap;animation:hintPulse .7s ease-in-out infinite alternate}
-.hint-arrow{width:44px;height:16px;flex-shrink:0;animation:hintPulse .7s ease-in-out infinite alternate}
-@keyframes hintPulse{from{opacity:.25;transform:translateX(-3px)}to{opacity:1;transform:translateX(3px)}}
-
-.app-wrap{display:flex;flex:1;margin-top:42px}
-
-.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;left:0;top:42px;height:calc(100vh - 42px);z-index:100;background:#13151c;border-right:1px solid #1e2028;display:flex;flex-direction:column;align-items:center;padding:0}
+/* SIDEBAR */
+.sidebar{width:var(--sw);flex-shrink:0;height:100vh;background:#13151c;border-right:1px solid #1e2028;display:flex;flex-direction:column;align-items:center}
 .sb-top{width:100%;display:flex;align-items:center;justify-content:center;padding:14px 0 10px}
-.sb-hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer}
-.sb-hamburger span{display:block;width:18px;height:2px;background:#555;border-radius:2px}
+.sb-hb{display:flex;flex-direction:column;gap:4px;cursor:pointer}
+.sb-hb span{display:block;width:18px;height:2px;background:#555;border-radius:2px}
 .sb-logo{display:flex;align-items:center;justify-content:center;padding:6px 0 10px}
 .sb-nav{display:flex;flex-direction:column;align-items:center;width:100%;gap:2px;flex:1}
-.sb-icon{width:44px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:.15s}
-.sb-icon:hover{background:#1e2028}
-.sb-icon svg{width:20px;height:20px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.sb-icon.yellow svg{stroke:#e8d840}
-.sb-spacer{flex:1}
-.sb-bottom{width:100%;display:flex;flex-direction:column;align-items:center;padding:8px 0 10px;gap:4px;border-top:1px solid #1e2028}
-.sb-logout svg{width:18px;height:18px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.sb-logout{width:44px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sbi{width:44px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:.15s}
+.sbi:hover{background:#1e2028}
+.sbi svg{width:20px;height:20px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sbi.y svg{stroke:#e8d840}
+.sb-bot{width:100%;display:flex;flex-direction:column;align-items:center;padding:8px 0 10px;gap:4px;border-top:1px solid #1e2028}
+.sb-out{width:44px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sb-out svg{width:18px;height:18px;stroke:#484a55;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
-.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:calc(100vh - 42px)}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0}
 
-.screen{display:none;flex:1;flex-direction:column}
+/* SCREENS */
+.screen{display:none;flex-direction:column;flex:1;height:100%;overflow:hidden}
 .screen.active{display:flex}
 
-.partners-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#13151c;border-bottom:1px solid #1e2028}
-.partners-title{font-size:20px;font-weight:700;color:#fff}
-.partners-header-right{display:flex;align-items:center;gap:12px}
-.btn-close-filters{display:flex;align-items:center;gap:4px;background:none;border:none;color:#888;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer}
-.btn-add{background:var(--yellow);color:#111;border:none;padding:8px 20px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
-.collapse-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:#888;cursor:pointer}
+/* ═══ PARTNERS ═══ */
+.p-header{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#13151c;border-bottom:1px solid #1e2028;flex-shrink:0}
+.p-title{font-size:20px;font-weight:700}
+.p-hr{display:flex;align-items:center;gap:12px}
+.ctog{display:flex;align-items:center;gap:6px;font-size:12px;color:#888;cursor:pointer}
 .tog{width:32px;height:16px;background:#2a2c35;border-radius:8px;position:relative}
 .tog::after{content:'';position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:#555}
+.btn-cf{display:flex;align-items:center;gap:4px;background:none;border:none;color:#888;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer}
+.btn-add{background:var(--yellow);color:#111;border:none;padding:8px 20px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+.p-filters{background:#13151c;padding:12px 24px;border-bottom:1px solid #1e2028;display:flex;gap:16px;align-items:flex-end;flex-shrink:0}
+.fg{display:flex;flex-direction:column;gap:5px;flex:1}
+.flbl{font-size:11px;color:#666;font-weight:500}
+.finput{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 12px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%}
+.fsw{position:relative;flex:1}
+.fsel{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 28px 8px 12px;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%;appearance:none}
+.farr{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#555;pointer-events:none;font-size:18px}
+.fa{display:flex;gap:8px;flex-shrink:0}
+.btn-rst{background:none;border:1px solid #2a2c35;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;padding:8px 18px;border-radius:6px;cursor:pointer}
+.btn-apl{background:var(--yellow);color:#111;border:none;padding:8px 22px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+.p-toolbar{display:flex;align-items:center;justify-content:flex-end;padding:7px 24px;gap:8px;border-bottom:1px solid #1e2028;flex-shrink:0}
+.tbi{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px}
+.tbi:hover{background:#1e2028}
+.tbi .material-icons{font-size:17px;color:#555}
+.vs{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;color:#777;padding:4px 8px;border-radius:6px}
+.vs:hover{background:#1e2028;color:#ccc}
+.vs .material-icons{font-size:15px}
 
-.filters-bar{background:#13151c;padding:14px 24px;border-bottom:1px solid #1e2028;display:flex;align-items:flex-end;gap:16px}
-.filter-group{display:flex;flex-direction:column;gap:5px;flex:1}
-.filter-label{font-size:11px;color:#666;font-weight:500}
-.filter-input{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 12px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%}
-.filter-select-wrap{position:relative;flex:1}
-.filter-select{background:#1a1c22;border:1px solid #2a2c35;border-radius:6px;padding:8px 30px 8px 12px;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;outline:none;width:100%;appearance:none;cursor:pointer}
-.filter-sel-arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#555;pointer-events:none;font-size:18px}
-.filters-actions{display:flex;gap:8px;flex-shrink:0}
-.btn-reset{background:none;border:1px solid #2a2c35;color:#888;font-family:'Montserrat',sans-serif;font-size:13px;padding:8px 18px;border-radius:6px;cursor:pointer}
-.btn-apply{background:var(--yellow);color:#111;border:none;padding:8px 22px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+/* SPLIT */
+.split-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.table-area{flex:1;overflow:auto;min-height:0}
 
-.table-toolbar{display:flex;align-items:center;justify-content:flex-end;padding:8px 24px;gap:10px;border-bottom:1px solid #1e2028}
-.toolbar-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px;transition:.15s}
-.toolbar-icon:hover{background:#1e2028}
-.toolbar-icon .material-icons{font-size:18px;color:#666}
-.view-settings{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;color:#888;padding:4px 8px;border-radius:6px;transition:.15s}
-.view-settings:hover{background:#1e2028;color:#ccc}
-.view-settings .material-icons{font-size:16px}
+/* TABLE */
+.ptable{width:100%;border-collapse:collapse;min-width:1400px}
+.ptable th{padding:9px 12px;font-size:11px;font-weight:600;color:#555;text-align:left;border-bottom:1px solid #1e2028;white-space:nowrap;background:#13151c;position:sticky;top:0;z-index:5}
+.ptable th:first-child{padding-left:24px}
+.ptable td{padding:8px 12px;font-size:12.5px;color:#bbb;border-bottom:1px solid #17191f;white-space:nowrap}
+.ptable td:first-child{padding-left:24px}
+.ptable tr:hover td{background:#161820}
+.pl{color:#fff;font-weight:600;cursor:pointer}
+.pl:hover{color:var(--yellow)}
+.sdot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.sdot.g{background:#4caf50}.sdot.r{background:#f44336}
+.ac{display:flex;align-items:center;gap:2px;justify-content:flex-end}
+.ab{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;background:none;border:none}
+.ab:hover{background:#252830}
+.ab .material-icons,.ab .material-icons-outlined{font-size:16px;color:#555}
+.ab.trend .material-icons{color:#00bcd4}
+.ab.trend:hover{background:#0b2530}
+.ab.trend:hover .material-icons{color:#2de0f7}
+.ab.del .material-icons{color:#f44336;opacity:.5}
+.ab.del:hover .material-icons{opacity:1}
 
-.table-wrap{flex:1;overflow:auto;padding-bottom:52px}
-.partners-table{width:100%;border-collapse:collapse;min-width:1400px}
-.partners-table th{padding:10px 12px;font-size:11px;font-weight:600;color:#555;text-align:left;border-bottom:1px solid #1e2028;white-space:nowrap;background:#13151c;position:sticky;top:0;z-index:10}
-.partners-table th:first-child{padding-left:24px}
-.partners-table td{padding:9px 12px;font-size:12.5px;color:#bbb;border-bottom:1px solid #17191f;white-space:nowrap}
-.partners-table td:first-child{padding-left:24px}
-.partners-table tr:hover td{background:#161820}
-.partner-link{color:#fff;font-weight:600;cursor:pointer;transition:.15s}
-.partner-link:hover{color:var(--yellow)}
-.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.status-dot.green{background:#4caf50}.status-dot.red{background:#f44336}
-.action-cell{display:flex;align-items:center;gap:2px;justify-content:flex-end}
-.act-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;background:none;border:none;transition:.15s}
-.act-btn:hover{background:#1e2028}
-.act-btn .material-icons,.act-btn .material-icons-outlined{font-size:16px;color:#555}
-.act-btn.trend-btn .material-icons{color:#00bcd4}
-.act-btn.trend-btn:hover .material-icons{color:#26d4ec}
-.act-btn.del .material-icons{color:#f44336;opacity:.5}
-.act-btn.del:hover .material-icons{opacity:1}
+/* PAGINATION */
+.p-pag{display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:8px 24px;border-top:1px solid #1e2028;flex-shrink:0;background:#13151c}
+.rpp{display:flex;align-items:center;gap:6px;font-size:12px;color:#777}
+.rpsel{background:#1a1c22;border:1px solid #2a2c35;border-radius:5px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:12px;padding:3px 20px 3px 8px;appearance:none;cursor:pointer;outline:none}
+.pi{font-size:12px;color:#777}
+.parr{display:flex;gap:4px}
+.pa{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;border:none;background:none}
+.pa:hover{background:#1e2028}
+.pa .material-icons{font-size:18px;color:#555}
+.pa:disabled .material-icons{color:#2a2c35}
 
-.pagination{position:fixed;bottom:0;left:var(--sidebar-w);right:0;background:#13151c;border-top:1px solid #1e2028;padding:9px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;z-index:50}
-.rows-per-page{display:flex;align-items:center;gap:6px;font-size:12px;color:#777}
-.rows-select{background:#1a1c22;border:1px solid #2a2c35;border-radius:5px;color:#ccc;font-family:'Montserrat',sans-serif;font-size:12px;padding:3px 20px 3px 8px;appearance:none;cursor:pointer;outline:none}
-.page-info{font-size:12px;color:#777}
-.page-arrows{display:flex;gap:4px}
-.page-arrow{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;border:none;background:none}
-.page-arrow:hover{background:#1e2028}
-.page-arrow .material-icons{font-size:18px;color:#666}
+/* DRAWER */
+.drawer{flex-shrink:0;display:flex;flex-direction:column;background:#13151c;border-top:2px solid #2a2c38;height:0;overflow:hidden;transition:height .28s cubic-bezier(0.4,0,0.2,1)}
+.drawer.open{height:380px}
+.d-handle{height:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:ns-resize;background:#13151c}
+.d-handle::after{content:'';width:36px;height:3px;border-radius:2px;background:#252830}
+.d-handle:hover::after{background:#e8d840}
+.d-topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 20px;border-bottom:1px solid #1e2028;flex-shrink:0}
+.d-tl{display:flex;align-items:center;gap:8px}
+.d-name{font-size:13px;font-weight:700;color:#fff}
+.d-sub{font-size:11px;color:#555}
+.d-tr{display:flex;align-items:center;gap:3px}
+.d-sz{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;background:none;border:none}
+.d-sz:hover{background:#1e2028}
+.d-sz .material-icons{font-size:15px;color:#555}
+.d-sz.on .material-icons{color:#e8d840}
+.d-div{width:1px;height:16px;background:#252830;margin:0 3px}
+.d-x{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;background:none;border:none}
+.d-x:hover{background:#2a1515}
+.d-x .material-icons{font-size:16px;color:#555}
+.d-x:hover .material-icons{color:#f44336}
+.d-body{flex:1;overflow-y:auto;padding:16px 24px 20px;scrollbar-width:thin;scrollbar-color:#252830 transparent}
 
-.acq-header{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid #1e2028;background:#13151c}
-.acq-header-left{display:flex;align-items:center;gap:10px}
-.back-btn{background:none;border:none;color:#888;cursor:pointer;display:flex;align-items:center;padding:4px}
-.back-btn:hover{color:#fff}
-.back-btn .material-icons{font-size:20px}
-.acq-title{font-size:18px;font-weight:700;color:#fff}
-.trend-icon-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid #2a2c38;background:#1a1c22;cursor:pointer;transition:.2s;margin-left:4px}
-.trend-icon-btn:hover{border-color:#00bcd4;background:#0e2a30}
-.trend-icon-btn .material-icons{font-size:16px;color:#00bcd4}
-.btn-save{background:var(--yellow);color:#111;border:none;padding:9px 26px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+/* ═══ ACQUIRE ═══ */
+.a-header{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid #1e2028;background:#13151c;flex-shrink:0}
+.a-hl{display:flex;align-items:center;gap:10px}
+.bbtn{background:none;border:none;color:#888;cursor:pointer;display:flex;align-items:center;padding:4px;border-radius:5px}
+.bbtn:hover{color:#fff;background:#1e2028}
+.bbtn .material-icons{font-size:20px}
+.a-title{font-size:18px;font-weight:700}
+.bsave{background:var(--yellow);color:#111;border:none;padding:9px 26px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+.a-nav{display:flex;border-bottom:1px solid #1e2028;padding:0 24px;background:#13151c;overflow-x:auto;flex-shrink:0}
+.a-nav::-webkit-scrollbar{height:0}
+.atab{padding:11px 16px;font-size:12.5px;font-weight:500;color:#666;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.atab:hover{color:#ccc}
+.atab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+.a-body{flex:1;overflow-y:auto;padding:24px 28px}
+.sh{font-size:15px;font-weight:700;margin-bottom:18px}
+.dblk{background:#1a1c22;border-radius:10px;padding:20px 24px}
+.fr{display:grid;gap:12px;padding:6px 0}
+.fr.c2{grid-template-columns:1fr 1fr}
+.fr.c3{grid-template-columns:1fr 1fr 1fr}
+.fr.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+.fc{min-width:0}
+.flb{font-size:11px;color:#666;font-weight:500;margin-bottom:4px;padding-left:2px;display:flex;align-items:center;gap:4px}
+.fib{background:#1e2028;border:1px solid #2a2c38;border-radius:8px;padding:10px 14px;min-height:44px;display:flex;align-items:center}
+.fib:hover{border-color:#383a48}
+.fv{font-size:13px;color:#d0d0d8;font-weight:500;word-break:break-all;width:100%}
+.fv.e{color:#383a48}
+.sr{display:flex;align-items:center;justify-content:space-between;width:100%}
+.sr .material-icons{font-size:17px;color:#555}
+.sa{display:inline-flex;align-items:center;background:#1a2e1a;color:#4caf50;border:1px solid #2a4a2a;border-radius:4px;padding:2px 10px;font-size:12px;font-weight:600}
 
-.acq-nav{display:flex;border-bottom:1px solid #1e2028;padding:0 24px;background:#13151c;overflow-x:auto}
-.acq-nav::-webkit-scrollbar{height:0}
-.acq-tab{padding:12px 18px;font-size:12.5px;font-weight:500;color:#666;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
-.acq-tab:hover{color:#ccc}
-.acq-tab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+/* ═══ TRENDS FULL PAGE ═══ */
+.t-header{display:flex;align-items:center;padding:10px 24px;border-bottom:1px solid #1e2028;background:#13151c;flex-shrink:0;gap:10px}
+.t-title{font-size:17px;font-weight:700}
+.t-sub{font-size:11px;color:#555;font-weight:500}
+.t-body{flex:1;overflow-y:auto;padding:24px 28px}
 
-.tab-page{display:none;padding:24px 28px;flex:1;overflow-y:auto}
-.tab-page.active{display:block}
+/* KPI */
+.krow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.kcard{background:var(--card);border-radius:9px;padding:16px 20px;position:relative;overflow:hidden}
+.klbl{font-size:11px;color:#aaa;font-weight:500;margin-bottom:6px}
+.kval{font-size:24px;font-weight:700}
+.kval.y{color:var(--yellow)}.kval.c{color:var(--cyan)}.kval.r{color:var(--red)}
+.kbadge{position:absolute;top:16px;right:16px;display:flex;align-items:center;gap:3px;border:1px solid #2a5a2a;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--green)}
+.kico{position:absolute;top:14px;right:16px}
+.ksub{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.ksi{display:flex;align-items:center;gap:5px;font-size:10px}
+.kbub{background:#252830;border:1px solid #333;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:600;color:#fff}
+.kp{font-weight:600}.kp.pos{color:var(--green)}.kp.neg{color:var(--red)}.kp.z{color:#888}
+.mbars{display:flex;align-items:flex-end;gap:3px;height:38px;position:absolute;right:16px;top:14px}
+.mb{width:12px;border-radius:2px 2px 0 0;transition:height .6s ease}
 
-.section-heading{font-size:15px;font-weight:700;color:#fff;margin-bottom:18px}
-.detail-block{background:#1a1c22;border-radius:10px;padding:20px 24px}
-.field-row{display:grid;gap:12px;padding:6px 0}
-.field-row.c2{grid-template-columns:1fr 1fr}
-.field-row.c3{grid-template-columns:1fr 1fr 1fr}
-.field-row.c4{grid-template-columns:1fr 1fr 1fr 1fr}
-.field-cell{min-width:0}
-.f-label{font-size:11px;color:#666;font-weight:500;margin-bottom:4px;padding-left:2px;display:flex;align-items:center;gap:4px}
-.f-input-box{background:#1e2028;border:1px solid #2a2c38;border-radius:8px;padding:10px 14px;min-height:46px;display:flex;align-items:center}
-.f-input-box:hover{border-color:#383a48}
-.f-val{font-size:13.5px;color:#d0d0d8;font-weight:500;word-break:break-all;width:100%}
-.f-val.empty{color:#383a48}
-.f-val .flag{font-size:15px;margin-right:4px}
-.sel-row{display:flex;align-items:center;justify-content:space-between;width:100%}
-.sel-row .material-icons{font-size:18px;color:#555}
-.status-active{display:inline-flex;align-items:center;background:#1a2e1a;color:#4caf50;border:1px solid #2a4a2a;border-radius:4px;padding:2px 10px;font-size:12px;font-weight:600}
+/* CHART */
+.csec{background:var(--card);border-radius:9px;padding:20px}
+.chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ctitle{font-size:13px;font-weight:600;color:#ccc}
+.cleg{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+.cli{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;cursor:pointer;user-select:none}
+.ccb{width:14px;height:14px;border-radius:3px;border:2px solid #555;display:flex;align-items:center;justify-content:center;background:#3a6a3a}
+.ccb.off{background:#252830;border-color:#333}
+.ccb .material-icons{font-size:10px;color:#fff}
+.cdot{width:9px;height:9px;border-radius:50%;border:2px solid}
+.cwrap{position:relative;height:260px}
+.srow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:14px}
+.sc{background:#181818;border-radius:9px;padding:14px 16px}
+.stop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sdotb{width:14px;height:14px;border-radius:50%}
+.sval{font-size:18px;font-weight:700;margin-bottom:8px}
+.scmp{display:flex;gap:20px}
+.scol{display:flex;flex-direction:column;gap:2px}
+.sclbl{font-size:9px;color:#555;font-weight:500}
+.scpct{font-size:11px;font-weight:700}
+.scpct.pos{color:var(--green)}.scpct.neg{color:var(--red)}.scpct.z{color:#888}
 
-.trends-page{display:none;padding:24px 28px;flex:1;overflow-y:auto}
-.trends-page.active{display:block}
-
-.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.kpi-card{background:var(--card);border-radius:10px;padding:20px 24px;position:relative;overflow:hidden}
-.kpi-lbl{font-size:12px;color:#aaa;font-weight:500;margin-bottom:8px}
-.kpi-val{font-size:28px;font-weight:700}
-.kpi-val.yellow{color:var(--yellow)}.kpi-val.cyan{color:var(--cyan)}.kpi-val.red{color:var(--red)}
-.kpi-badge{position:absolute;top:20px;right:20px;display:flex;align-items:center;gap:4px;border:1px solid;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600}
-.kpi-badge.up{color:var(--green);border-color:#2a5a2a}
-.kpi-icon{position:absolute;top:18px;right:20px}
-.kpi-sub{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
-.kpi-sub-item{display:flex;align-items:center;gap:6px;font-size:11px}
-.kpi-bubble{background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;color:#fff}
-.kpi-pct{font-weight:600}.kpi-pct.pos{color:var(--green)}.kpi-pct.neg{color:var(--red)}.kpi-pct.zero{color:#aaa}
-.mini-bars{display:flex;align-items:flex-end;gap:4px;height:44px;position:absolute;right:20px;top:16px}
-.mini-bar{width:14px;border-radius:2px 2px 0 0;transition:height .6s ease}
-.chart-section{background:var(--card);border-radius:10px;padding:24px}
-.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.chart-title{font-size:14px;font-weight:600;color:#ccc}
-.chart-legend{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:18px}
-.legend-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;cursor:pointer;user-select:none}
-.legend-cb{width:16px;height:16px;border-radius:3px;border:2px solid #555;display:flex;align-items:center;justify-content:center;background:#3a6a3a}
-.legend-cb.off{background:#2a2a2a;border-color:#444}
-.legend-cb .material-icons{font-size:11px;color:#fff}
-.legend-dot{width:10px;height:10px;border-radius:50%;border:2px solid}
-.chart-wrap{position:relative;height:280px}
-.sum-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-top:20px}
-.sum-card{background:#181818;border-radius:10px;padding:18px 20px}
-.sum-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.sum-dot{width:16px;height:16px;border-radius:50%}
-.sum-val{font-size:22px;font-weight:700;margin-bottom:10px}
-.sum-compare{display:flex;gap:24px}
-.sum-col{display:flex;flex-direction:column;gap:2px}
-.sum-col-lbl{font-size:10px;color:#666;font-weight:500}
-.sum-col-pct{font-size:12px;font-weight:700}
-.sum-col-pct.pos{color:var(--green)}.sum-col-pct.neg{color:var(--red)}.sum-col-pct.zero{color:#aaa}
-
-.feedback-btn{position:fixed;bottom:16px;left:70px;background:#3b5bdb;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:300}
-.feedback-btn .material-icons{font-size:14px}
+.fb-btn{position:fixed;bottom:16px;left:70px;background:#3b5bdb;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:300}
 </style>
 </head>
 <body>
 
-<!-- CONCEPT SWITCHER -->
-<div class="concept-switcher">
-  <div class="concept-hint">
-    <span class="hint-text">Try the concepts here!</span>
-    <svg class="hint-arrow" viewBox="0 0 44 16" fill="none">
-      <line x1="2" y1="8" x2="38" y2="8" stroke="#e8d840" stroke-width="2" stroke-linecap="round"/>
-      <path d="M30 2 L38 8 L30 14" stroke="#e8d840" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
-  <button class="concept-btn active" onclick="setConcept(1,this)">① Trends as tab</button>
-  <button class="concept-btn" onclick="setConcept(2,this)">② Trends via icon in title</button>
-  <button class="concept-btn" onclick="setConcept(3,this)">③ Trends via icon in table</button>
-</div>
-
-<div class="app-wrap">
-
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="sb-top"><div class="sb-hamburger"><span></span><span></span><span></span></div></div>
+  <div class="sb-top"><div class="sb-hb"><span></span><span></span><span></span></div></div>
   <div class="sb-logo">
-    <svg viewBox="0 0 48 48" fill="none" style="width:32px;height:32px">
-      <path d="M10 6 C6 6 4 8 4 12 L4 36 C4 40 6 42 10 42 C12 42 14 41 16 39 L38 27 C41 25 42 24 42 24 C42 24 41 23 38 21 L16 9 C14 7 12 6 10 6Z" fill="#e8d840"/>
-      <path d="M12 13 L12 35 L32 24 Z" fill="#13151c"/>
+    <svg viewBox="0 0 48 48" fill="none" style="width:30px;height:30px">
+      <path d="M10 6C6 6 4 8 4 12L4 36C4 40 6 42 10 42C12 42 14 41 16 39L38 27C41 25 42 24 42 24C42 24 41 23 38 21L16 9C14 7 12 6 10 6Z" fill="#e8d840"/>
+      <path d="M12 14L12 34L30 24Z" fill="#13151c"/>
     </svg>
   </div>
   <div class="sb-nav">
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V11.5z"/><path d="M9 22V13h6v9"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="5" y1="20" x2="5" y2="13"/><line x1="10" y1="20" x2="10" y2="7"/><line x1="15" y1="20" x2="15" y2="10"/><line x1="20" y1="20" x2="20" y2="15"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><line x1="4" y1="8" x2="20" y2="8"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="10" y1="18" x2="14" y2="18"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><line x1="7" y1="11.2" x2="17" y2="6.8"/><line x1="7" y1="12.8" x2="17" y2="17.2"/></svg></div>
-    <div class="sb-icon yellow"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-    <div class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="18" r="1.3" fill="#484a55" stroke="none"/></svg></div>
-    <div class="sb-spacer"></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V11.5z"/><path d="M9 22V13h6v9"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><line x1="5" y1="20" x2="5" y2="13"/><line x1="10" y1="20" x2="10" y2="7"/><line x1="15" y1="20" x2="15" y2="10"/><line x1="20" y1="20" x2="20" y2="15"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><line x1="4" y1="8" x2="20" y2="8"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="10" y1="18" x2="14" y2="18"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><line x1="7" y1="11.2" x2="17" y2="6.8"/><line x1="7" y1="12.8" x2="17" y2="17.2"/></svg></div>
+    <div class="sbi y"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+    <div class="sbi"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="#484a55" stroke="none"/><circle cx="12" cy="18" r="1.3" fill="#484a55" stroke="none"/></svg></div>
   </div>
-  <div class="sb-bottom">
-    <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5a7a4a,#3d5c32);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer">VS</div>
-    <div class="sb-logout"><svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5M21 12H9"/><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
+  <div class="sb-bot">
+    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#5a7a4a,#3d5c32);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer">VS</div>
+    <div class="sb-out"><svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5M21 12H9"/><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-  <!-- PARTNERS SCREEN -->
-  <div class="screen active" id="screen-partners">
-    <div class="partners-header">
-      <div class="partners-title">Partners</div>
-      <div class="partners-header-right">
-        <div class="collapse-toggle"><div class="tog"></div><span style="font-size:12px;color:#888">Collapse</span></div>
-        <button class="btn-close-filters"><span class="material-icons" style="font-size:14px">close</span> Close Filters</button>
+  <!-- ═══ PARTNERS ═══ -->
+  <div class="screen active" id="scr-partners">
+    <div class="p-header">
+      <div class="p-title">Partners</div>
+      <div class="p-hr">
+        <div class="ctog"><div class="tog"></div><span style="font-size:12px;color:#888">Collapse</span></div>
+        <button class="btn-cf"><span class="material-icons" style="font-size:13px">close</span> Close Filters</button>
         <button class="btn-add">Add</button>
       </div>
     </div>
-    <div class="filters-bar">
-      <div class="filter-group"><span class="filter-label">Partner</span><input class="filter-input" type="text"></div>
-      <div class="filter-group"><span class="filter-label">Status</span>
-        <div class="filter-select-wrap"><select class="filter-select"><option value="">— select —</option><option>Active</option><option>Inactive</option></select><span class="material-icons filter-sel-arrow">expand_more</span></div>
+    <div class="p-filters">
+      <div class="fg"><span class="flbl">Partner</span><input class="finput" type="text"></div>
+      <div class="fg"><span class="flbl">Status</span>
+        <div class="fsw"><select class="fsel"><option value="">— select —</option><option>Active</option><option>Inactive</option></select><span class="material-icons farr">expand_more</span></div>
       </div>
-      <div class="filters-actions"><button class="btn-reset">Reset</button><button class="btn-apply">Apply</button></div>
+      <div class="fa"><button class="btn-rst">Reset</button><button class="btn-apl">Apply</button></div>
     </div>
-    <div class="table-toolbar">
-      <div class="toolbar-icon"><span class="material-icons">refresh</span></div>
-      <div class="toolbar-icon"><span class="material-icons">filter_list</span></div>
-      <div class="view-settings"><span class="material-icons">tune</span> View Settings</div>
-      <div class="toolbar-icon"><span class="material-icons">view_column</span></div>
-      <div class="toolbar-icon"><span class="material-icons">download</span></div>
+    <div class="p-toolbar">
+      <div class="tbi"><span class="material-icons">refresh</span></div>
+      <div class="tbi"><span class="material-icons">filter_list</span></div>
+      <div class="vs"><span class="material-icons">tune</span>View Settings</div>
+      <div class="tbi"><span class="material-icons">view_column</span></div>
+      <div class="tbi"><span class="material-icons">download</span></div>
     </div>
-    <div class="table-wrap">
-      <table class="partners-table">
-        <thead>
-          <tr>
-            <th>Name</th><th>Status</th><th>Contact Name</th><th>Leads</th><th>Dupe %</th><th>Sold</th><th>Sold %</th><th>Errors</th><th>Errors %</th><th>Timeouts</th><th>Timeouts %</th><th>Redirect %</th><th>Avg Res Time</th><th>Avg Appr Time</th>
+    <div class="split-area">
+      <div class="table-area">
+        <table class="ptable">
+          <thead><tr>
+            <th>Name</th><th>Stat</th><th>Contact Name</th><th>Leads</th><th>Dupe %</th><th>Sold</th><th>Sold %</th><th>Errors</th><th>Errors %</th><th>Timeouts</th><th>Timeouts %</th><th>Redirect %</th><th>Avg Res Time</th><th>Avg Appr Time</th>
             <th style="text-align:right;padding-right:24px">Action</th>
-          </tr>
-        </thead>
-        <tbody id="partners-tbody"></tbody>
-      </table>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="drawer" id="drawer">
+        <div class="d-handle" id="d-handle"></div>
+        <div class="d-topbar">
+          <div class="d-tl">
+            <span class="material-icons" style="font-size:16px;color:#00bcd4">show_chart</span>
+            <span class="d-name" id="d-name">—</span>
+            <span class="d-sub">Trends · last 2 weeks</span>
+          </div>
+          <div class="d-tr">
+            <button class="d-sz" id="sz-sm" onclick="setSize('sm')"><span class="material-icons">vertical_align_bottom</span></button>
+            <button class="d-sz" id="sz-md" onclick="setSize('md')"><span class="material-icons">vertical_align_center</span></button>
+            <button class="d-sz" id="sz-lg" onclick="setSize('lg')"><span class="material-icons">vertical_align_top</span></button>
+            <div class="d-div"></div>
+            <button class="d-x" onclick="closeDrawer()"><span class="material-icons">close</span></button>
+          </div>
+        </div>
+        <div class="d-body" id="d-body"></div>
+      </div>
     </div>
-    <div class="pagination">
-      <div class="rows-per-page">Rows per page: <div style="position:relative"><select class="rows-select"><option>100</option><option>50</option><option>25</option></select><span class="material-icons" style="position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:13px;color:#555;pointer-events:none">expand_more</span></div></div>
-      <div class="page-info">1–100 of 488</div>
-      <div class="page-arrows">
-        <button class="page-arrow" disabled><span class="material-icons">chevron_left</span></button>
-        <button class="page-arrow"><span class="material-icons">chevron_right</span></button>
+    <div class="p-pag">
+      <div class="rpp">Rows per page:<div style="position:relative"><select class="rpsel"><option>100</option><option>50</option><option>25</option></select><span class="material-icons" style="position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:12px;color:#555;pointer-events:none">expand_more</span></div></div>
+      <span class="pi">1–100 of 488</span>
+      <div class="parr">
+        <button class="pa" disabled><span class="material-icons">chevron_left</span></button>
+        <button class="pa"><span class="material-icons">chevron_right</span></button>
       </div>
     </div>
   </div>
 
-  <!-- ACQUIRE SCREEN -->
-  <div class="screen" id="screen-acquire">
-    <!-- Header C1 -->
-    <div id="acq-header-c1" class="acq-header">
-      <div class="acq-header-left">
-        <button class="back-btn" onclick="goBack()"><span class="material-icons">arrow_back</span></button>
-        <span class="acq-title" id="acq-title-c1">—</span>
-      </div>
-      <button class="btn-save">Save</button>
-    </div>
-    <!-- Header C2/C3 -->
-    <div id="acq-header-c2" class="acq-header">
-      <div class="acq-header-left">
-        <button class="back-btn" onclick="goBack()"><span class="material-icons">arrow_back</span></button>
-        <span class="acq-title" id="acq-title-c2">—</span>
-        <div class="trend-icon-btn" title="View Trends" onclick="openTrendsC2()">
+  <!-- ═══ PARTNER DETAIL ═══ -->
+  <div class="screen" id="scr-acquire">
+    <div class="a-header">
+      <div class="a-hl">
+        <button class="bbtn" onclick="go('partners')"><span class="material-icons">arrow_back</span></button>
+        <span class="a-title" id="a-title">Partner</span>
+        <button class="ab trend" onclick="openTrendsPage()" style="width:32px;height:32px;border-radius:7px;margin-left:4px" title="Ver Trends">
           <span class="material-icons">show_chart</span>
+        </button>
+      </div>
+      <button class="bsave">Save</button>
+    </div>
+    <div class="a-nav">
+      <div class="atab active">Home</div><div class="atab">Conditions</div><div class="atab">Checkers</div>
+      <div class="atab">Deduplications</div><div class="atab">Schedule</div>
+      <div class="atab">Campaign Capacity Groups</div><div class="atab">Users</div><div class="atab">Additional Feature</div>
+    </div>
+    <div class="a-body">
+      <div class="sh">Basic details</div>
+      <div class="dblk">
+        <div class="fr c2">
+          <div class="fc"><div class="flb">Name</div><div class="fib"><span class="fv" id="detail-name">—</span></div></div>
+          <div class="fc"><div class="flb">Description</div><div class="fib"><span class="fv e">—</span></div></div>
+        </div>
+        <div class="fr c3">
+          <div class="fc"><div class="flb">Allow Remarketing</div><div class="fib"><div class="sr"><span class="fv">All</span><span class="material-icons">expand_more</span></div></div></div>
+          <div class="fc"><div class="flb">Delay Value <span class="material-icons-outlined" style="font-size:13px;color:#555">info</span></div><div class="fib"><span class="fv">PT0S</span></div></div>
+          <div class="fc"><div class="flb">Status</div><div class="fib"><div class="sr"><span class="sa">Active</span><span class="material-icons">expand_more</span></div></div></div>
+        </div>
+        <div class="fr c4">
+          <div class="fc"><div class="flb">Contact Name</div><div class="fib"><span class="fv" id="detail-contact">—</span></div></div>
+          <div class="fc"><div class="flb">Contact Title</div><div class="fib"><span class="fv e">—</span></div></div>
+          <div class="fc"><div class="flb">Contact Email</div><div class="fib"><span class="fv e">—</span></div></div>
+          <div class="fc"><div class="flb">Contact Skype</div><div class="fib"><span class="fv e">—</span></div></div>
+        </div>
+        <div class="fr c3">
+          <div class="fc"><div class="flb">Customer Service Phone</div><div class="fib"><span class="fv">🇺🇸 +1 800 454 5904</span></div></div>
+          <div class="fc"><div class="flb">Customer Service Email</div><div class="fib"><span class="fv">info@acquireinteractive.com</span></div></div>
+          <div class="fc"><div class="flb">Customer Service Address</div><div class="fib"><span class="fv e">—</span></div></div>
+        </div>
+        <div class="fr c3">
+          <div class="fc"><div class="flb">Postal Code</div><div class="fib"><span class="fv e">—</span></div></div>
+          <div class="fc"><div class="flb">City</div><div class="fib"><span class="fv e">—</span></div></div>
+          <div class="fc"><div class="flb">State</div><div class="fib"><span class="fv e">—</span></div></div>
+        </div>
+        <div class="fr c4">
+          <div class="fc"><div class="flb">Billing Contact Name</div><div class="fib"><span class="fv">Acquire Interactive, LLC</span></div></div>
+          <div class="fc"><div class="flb">Billing Email</div><div class="fib"><span class="fv">Accounting@Speedwellholdings.com</span></div></div>
+          <div class="fc"><div class="flb">Billing Company Name</div><div class="fib"><span class="fv e">—</span></div></div>
+          <div class="fc"><div class="flb">Billing Phone</div><div class="fib"><span class="fv">🇺🇸 +1</span></div></div>
+        </div>
+        <div class="fr c4">
+          <div class="fc"><div class="flb">Billing Address</div><div class="fib"><span class="fv">325 E. Warm Springs Rd, Suite 101</span></div></div>
+          <div class="fc"><div class="flb">Billing Postal Code</div><div class="fib"><span class="fv">89119</span></div></div>
+          <div class="fc"><div class="flb">Billing City</div><div class="fib"><span class="fv">Las Vegas</span></div></div>
+          <div class="fc"><div class="flb">Billing State</div><div class="fib"><span class="fv">NV</span></div></div>
+        </div>
+        <div class="fr">
+          <div class="fc"><div class="flb">Notes</div><div class="fib" style="align-items:flex-start;min-height:60px"><span class="fv">Account Manager: Michelle<br>Net 15</span></div></div>
         </div>
       </div>
-      <button class="btn-save">Save</button>
-    </div>
-
-    <!-- Tabs C1 (with Trends tab) -->
-    <div id="acq-tabs-c1" class="acq-nav">
-      <div class="acq-tab active" onclick="showTab('home',this)">Home</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Conditions</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Checkers</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Deduplications</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Schedule</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Campaign Capacity Groups</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Users</div>
-      <div class="acq-tab" onclick="showTab('home',this)">Additional Feature</div>
-      <div class="acq-tab" onclick="showTab('trends',this)">Trends</div>
-    </div>
-    <!-- Tabs C2/C3 (no Trends tab) -->
-    <div id="acq-tabs-c2" class="acq-nav">
-      <div class="acq-tab active">Home</div>
-      <div class="acq-tab">Conditions</div>
-      <div class="acq-tab">Checkers</div>
-      <div class="acq-tab">Deduplications</div>
-      <div class="acq-tab">Schedule</div>
-      <div class="acq-tab">Campaign Capacity Groups</div>
-      <div class="acq-tab">Users</div>
-      <div class="acq-tab">Additional Feature</div>
-    </div>
-
-    <!-- HOME TAB -->
-    <div class="tab-page active" id="tab-home">
-      <div class="section-heading">Basic details</div>
-      <div class="detail-block">
-        <div class="field-row c2">
-          <div class="field-cell"><div class="f-label">Name</div><div class="f-input-box"><span class="f-val">Acquire Interactive</span></div></div>
-          <div class="field-cell"><div class="f-label">Description</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-        </div>
-        <div class="field-row c3">
-          <div class="field-cell"><div class="f-label">Allow Remarketing</div><div class="f-input-box"><div class="sel-row"><span class="f-val">All</span><span class="material-icons">expand_more</span></div></div></div>
-          <div class="field-cell"><div class="f-label">Delay Value <span class="material-icons-outlined" style="font-size:13px;color:#555">info</span></div><div class="f-input-box"><span class="f-val">PT0S</span></div></div>
-          <div class="field-cell"><div class="f-label">Status</div><div class="f-input-box"><div class="sel-row"><span class="status-active">Active</span><span class="material-icons">expand_more</span></div></div></div>
-        </div>
-        <div class="field-row c4">
-          <div class="field-cell"><div class="f-label">Contact Name</div><div class="f-input-box"><span class="f-val">Thomas Littlejohn</span></div></div>
-          <div class="field-cell"><div class="f-label">Contact Title</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-          <div class="field-cell"><div class="f-label">Contact Email</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-          <div class="field-cell"><div class="f-label">Contact Skype</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-        </div>
-        <div class="field-row c3">
-          <div class="field-cell"><div class="f-label">Customer Service Phone</div><div class="f-input-box"><span class="f-val"><span class="flag">🇺🇸</span>+1 800 454 5904</span></div></div>
-          <div class="field-cell"><div class="f-label">Customer Service Email</div><div class="f-input-box"><span class="f-val">info@acquireinteractive.com</span></div></div>
-          <div class="field-cell"><div class="f-label">Customer Service Address</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-        </div>
-        <div class="field-row c3">
-          <div class="field-cell"><div class="f-label">Customer Service Postal Code</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-          <div class="field-cell"><div class="f-label">Customer Service City</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-          <div class="field-cell"><div class="f-label">Customer Service State</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-        </div>
-        <div class="field-row c4">
-          <div class="field-cell"><div class="f-label">Billing Contact Name</div><div class="f-input-box"><span class="f-val">Acquire Interactive, LLC</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing Email</div><div class="f-input-box"><span class="f-val">Accounting@Speedwellholdings.com</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing Company Name</div><div class="f-input-box"><span class="f-val empty">—</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing Phone</div><div class="f-input-box"><span class="f-val"><span class="flag">🇺🇸</span>+1</span></div></div>
-        </div>
-        <div class="field-row c4">
-          <div class="field-cell"><div class="f-label">Billing Address</div><div class="f-input-box"><span class="f-val">325 E. Warm Springs Rd, Suite 101</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing Postal Code</div><div class="f-input-box"><span class="f-val">89119</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing City</div><div class="f-input-box"><span class="f-val">Las Vegas</span></div></div>
-          <div class="field-cell"><div class="f-label">Billing State</div><div class="f-input-box"><span class="f-val">NV</span></div></div>
-        </div>
-        <div class="field-row">
-          <div class="field-cell"><div class="f-label">Notes</div><div class="f-input-box" style="align-items:flex-start;min-height:68px"><span class="f-val">Account Manager: Michelle<br>Net 15</span></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TRENDS TAB (C1 only) -->
-    <div class="tab-page" id="tab-trends">
-      <div id="trends-content-c1"></div>
     </div>
   </div>
 
-  <!-- TRENDS FULLSCREEN (C2 & C3) -->
-  <div class="screen" id="screen-trends-full">
-    <div class="acq-header">
-      <div class="acq-header-left">
-        <button class="back-btn" id="trends-back-btn"><span class="material-icons">arrow_back</span></button>
-        <span class="acq-title" id="trends-full-title">— Trends</span>
+  <!-- ═══ TRENDS FULL PAGE ═══ -->
+  <div class="screen" id="scr-trends">
+    <div class="t-header">
+      <button class="bbtn" id="t-back"><span class="material-icons">arrow_back</span></button>
+      <div>
+        <div class="t-title" id="t-title">Trends</div>
+        <div class="t-sub">last 2 weeks</div>
       </div>
     </div>
-    <div class="trends-page active" id="trends-full-content"></div>
+    <div class="t-body" id="t-body"></div>
   </div>
 
 </div>
-</div>
 
-<button class="feedback-btn"><span class="material-icons">chat_bubble</span>Feedback</button>
+<button class="fb-btn"><span class="material-icons" style="font-size:14px">chat_bubble</span>Feedback</button>
 
 <script>
-const partners=[
-  {name:'LeadsMarket',st:'green',contact:'Michael Parshin',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Acquire Interactive',st:'green',contact:'Thomas Littlejohn',leads:222840,dupe:'0.79%',sold:1057,soldP:'0.47%',err:74,errP:'0.01%',to:98,toP:'0.01%',red:'71.05%',res:'1.33s',appr:'8.89s'},
-  {name:'LeadFlash',st:'red',contact:'Matthew Sclier',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'RoundSky',st:'green',contact:'Nazar Brizinov',leads:221408,dupe:'5.29%',sold:4569,soldP:'2.06%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'51.52%',res:'0.27s',appr:'1.30s'},
-  {name:'T3Leads',st:'red',contact:'Hrant Minasyan',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Dot818',st:'green',contact:'Gerald Lopez',leads:188111,dupe:'36.10%',sold:4510,soldP:'2.40%',err:30,errP:'0.01%',to:254,toP:'0.06%',red:'70.51%',res:'2.68s',appr:'3.92s'},
-  {name:'LeadToro',st:'red',contact:'Eduardo Tavel',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'ArrowShade',st:'red',contact:'Genel Ilyasova',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'DevWire (aka Dakota)',st:'red',contact:'Jacob (Jake) Weeks',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Lender Edge',st:'green',contact:'Ethan Taub',leads:42116,dupe:'0.00%',sold:29,soldP:'0.07%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'68.97%',res:'0.46s',appr:'4.82s'},
-  {name:'SpeedyCash',st:'green',contact:'Jamie Tuchalski',leads:8462,dupe:'50.20%',sold:567,soldP:'6.70%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'86.77%',res:'0.76s',appr:'1.41s'},
-  {name:'Revival',st:'green',contact:'Chris Olsen',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'NCR Financial',st:'red',contact:'Scott Gerardi',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Power Finance',st:'red',contact:'Jody Boyd',leads:1632,dupe:'0.00%',sold:52,soldP:'3.19%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'84.62%',res:'3.48s',appr:'1.27s'},
-  {name:'LoanMe',st:'red',contact:'Marissa Noriega',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'CashCall',st:'red',contact:'Violet Yebeyan',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Sanco Business',st:'red',contact:'Eddie Sandoval',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Intimate Interactive',st:'green',contact:'Jason Chang',leads:75494,dupe:'40.20%',sold:240,soldP:'0.32%',err:0,errP:'0.00%',to:0,toP:'0.00%',red:'70.00%',res:'1.28s',appr:'5.12s'},
-  {name:'CuraDebt',st:'red',contact:'Eric Pemper',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Global Personals',st:'green',contact:'Abe Smiz',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
-  {name:'Trend Capital',st:'red',contact:'Sarah Reardon',leads:0,dupe:'N/A',sold:0,soldP:'N/A',err:0,errP:'N/A',to:0,toP:'N/A',red:'N/A',res:'N/A',appr:'N/A'},
+// ═══ DATA ═══
+const DATA=[
+  {n:'LeadsMarket',s:'g',c:'Michael Parshin',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Acquire Interactive',s:'g',c:'Thomas Littlejohn',l:222840,d:'0.79%',so:1057,sp:'0.47%',e:74,ep:'0.01%',t:98,tp:'0.01%',r:'71.05%',ar:'1.33s',aa:'8.89s'},
+  {n:'LeadFlash',s:'r',c:'Matthew Sclier',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'RoundSky',s:'g',c:'Nazar Brizinov',l:221408,d:'5.29%',so:4569,sp:'2.06%',e:0,ep:'0.00%',t:0,tp:'0.00%',r:'51.52%',ar:'0.27s',aa:'1.30s'},
+  {n:'T3Leads',s:'r',c:'Hrant Minasyan',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Dot818',s:'g',c:'Gerald Lopez',l:188111,d:'36.10%',so:4510,sp:'2.40%',e:30,ep:'0.01%',t:254,tp:'0.06%',r:'70.51%',ar:'2.68s',aa:'3.92s'},
+  {n:'LeadToro',s:'r',c:'Eduardo Tavel',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'ArrowShade',s:'r',c:'Genel Ilyasova',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'DevWire (aka Dakota)',s:'r',c:'Jacob (Jake) Weeks',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Lender Edge',s:'g',c:'Ethan Taub',l:42116,d:'0.00%',so:29,sp:'0.07%',e:0,ep:'0.00%',t:0,tp:'0.00%',r:'68.97%',ar:'0.46s',aa:'4.82s'},
+  {n:'SpeedyCash',s:'g',c:'Jamie Tuchalski',l:8462,d:'50.20%',so:567,sp:'6.70%',e:0,ep:'0.00%',t:0,tp:'0.00%',r:'86.77%',ar:'0.76s',aa:'1.41s'},
+  {n:'Revival',s:'g',c:'Chris Olsen',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'NCR Financial',s:'r',c:'Scott Gerardi',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Power Finance',s:'r',c:'Jody Boyd',l:1632,d:'0.00%',so:52,sp:'3.19%',e:0,ep:'0.00%',t:0,tp:'0.00%',r:'84.62%',ar:'3.48s',aa:'1.27s'},
+  {n:'LoanMe',s:'r',c:'Marissa Noriega',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'CashCall',s:'r',c:'Violet Yebeyan',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Sanco Business',s:'r',c:'Eddie Sandoval',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Intimate Interactive',s:'g',c:'Jason Chang',l:75494,d:'40.20%',so:240,sp:'0.32%',e:0,ep:'0.00%',t:0,tp:'0.00%',r:'70.00%',ar:'1.28s',aa:'5.12s'},
+  {n:'CuraDebt',s:'r',c:'Eric Pemper',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Global Personals',s:'g',c:'Abe Smiz',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
+  {n:'Trend Capital',s:'r',c:'Sarah Reardon',l:0,d:'N/A',so:0,sp:'N/A',e:0,ep:'N/A',t:0,tp:'N/A',r:'N/A',ar:'N/A',aa:'N/A'},
 ];
 
-let currentConcept = 1;
-let chartInstance = null;
-let chartInited = false;
+const CHART_LABELS=['17Feb','18Feb','19Feb','20Feb','21Feb','22Feb','23Feb','24Feb','25Feb','26Feb','27Feb','28Feb','01Mar','02Mar','03Mar'];
+const CHART_APP=[190000,245000,210000,205000,200000,195000,145000,140000,185000,178000,215000,165000,125000,200000,191597];
+const CHART_REV=[2200,2800,2500,2450,2300,2250,1800,1750,2100,2050,2400,1900,1600,2800,3029];
+const CHART_RED=[75,78,76,75,77,74,73,72,74,73,76,71,70,76,71.93];
+const CHART_EPL=[0.01,0.015,0.012,0.013,0.01,0.012,0.008,0.009,0.015,0.013,0.018,0.011,0.009,0.02,0.02];
 
-function setConcept(n, btn) {
-  currentConcept = n;
-  document.querySelectorAll('.concept-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  chartInited = false;
-  showScreen('partners');
-  buildTable();
+// ═══ STATE ═══
+let currentPartner='';
+let drawerChart=null;
+let trendsChart=null;
+const SZ={sm:190,md:380,lg:580};
+let curSz='md';
+
+// ═══ NAVIGATION ═══
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr-'+id).classList.add('active');
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+function openPartner(name,contact){
+  currentPartner=name;
+  document.getElementById('a-title').textContent=name;
+  document.getElementById('detail-name').textContent=name;
+  document.getElementById('detail-contact').textContent=contact||'—';
+  go('acquire');
 }
 
-function buildTable() {
-  const tbody = document.getElementById('partners-tbody');
-  tbody.innerHTML = '';
-  partners.forEach(p => {
-    const showTrendIcon = currentConcept === 3;
-    const safeName = p.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><span class="partner-link" onclick="openAcquire('${safeName}')">${p.name}</span></td>
-      <td><span class="status-dot ${p.st}"></span></td>
-      <td>${p.contact}</td>
-      <td>${p.leads ? p.leads.toLocaleString() : 0}</td>
-      <td>${p.dupe}</td><td>${p.sold}</td><td>${p.soldP}</td>
-      <td>${p.err}</td><td>${p.errP}</td>
-      <td>${p.to}</td><td>${p.toP}</td>
-      <td>${p.red}</td><td>${p.res}</td><td>${p.appr}</td>
+function openTrendsPage(){
+  // Set header
+  document.getElementById('t-title').textContent=currentPartner+' — Trends';
+  document.getElementById('t-back').onclick=()=>go('acquire');
+  // Render content
+  document.getElementById('t-body').innerHTML=buildTrendsHTML('tp');
+  // Navigate
+  go('trends');
+  // Init chart
+  if(trendsChart){trendsChart.destroy();trendsChart=null;}
+  setTimeout(()=>{
+    trendsChart=makeChart('chart-tp');
+    animCounters(document.getElementById('t-body'));
+    animBars('mb1-tp','mb2-tp','mb3-tp');
+  },80);
+}
+
+// ═══ TABLE ═══
+function buildTable(){
+  const tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  DATA.forEach(p=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><span class="pl" onclick="openPartner('${p.n}','${p.c}')">${p.n}</span></td>
+      <td><span class="sdot ${p.s}"></span></td>
+      <td>${p.c}</td>
+      <td>${p.l?p.l.toLocaleString():0}</td>
+      <td>${p.d}</td><td>${p.so}</td><td>${p.sp}</td>
+      <td>${p.e}</td><td>${p.ep}</td>
+      <td>${p.t}</td><td>${p.tp}</td>
+      <td>${p.r}</td><td>${p.ar}</td><td>${p.aa}</td>
       <td style="text-align:right;padding-right:24px">
-        <div class="action-cell">
-          ${showTrendIcon ? `<button class="act-btn trend-btn" title="Trends" onclick="openTrendsFromTable('${safeName}')"><span class="material-icons" style="font-size:16px;color:#00bcd4">show_chart</span></button>` : ''}
-          <button class="act-btn" title="Pause"><span class="material-icons" style="font-size:16px;color:#555">pause_circle</span></button>
-          <button class="act-btn" title="Edit"><span class="material-icons" style="font-size:16px;color:#555">edit</span></button>
-          <button class="act-btn del" title="Delete"><span class="material-icons" style="font-size:16px">delete</span></button>
+        <div class="ac">
+          <button class="ab trend" onclick="openDrawer('${p.n}')"><span class="material-icons">show_chart</span></button>
+          <button class="ab"><span class="material-icons-outlined">pause_circle</span></button>
+          <button class="ab"><span class="material-icons">edit</span></button>
+          <button class="ab del"><span class="material-icons">delete</span></button>
         </div>
       </td>`;
-    tbody.appendChild(tr);
+    tb.appendChild(tr);
   });
 }
 
-function openAcquire(name) {
-  document.getElementById('acq-title-c1').textContent = name;
-  document.getElementById('acq-title-c2').textContent = name;
-
-  const h1 = document.getElementById('acq-header-c1');
-  const h2 = document.getElementById('acq-header-c2');
-  const t1 = document.getElementById('acq-tabs-c1');
-  const t2 = document.getElementById('acq-tabs-c2');
-
-  if (currentConcept === 1) {
-    h1.style.display = 'flex'; h2.style.display = 'none';
-    t1.style.display = 'flex'; t2.style.display = 'none';
-  } else {
-    h1.style.display = 'none'; h2.style.display = 'flex';
-    t1.style.display = 'none'; t2.style.display = 'flex';
-  }
-
-  // Reset to home tab
-  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-home').classList.add('active');
-  document.querySelectorAll('#acq-tabs-c1 .acq-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('#acq-tabs-c1 .acq-tab').classList.add('active');
-
-  showScreen('acquire');
+// ═══ DRAWER ═══
+function openDrawer(name){
+  document.getElementById('d-name').textContent=name;
+  document.getElementById('d-body').innerHTML=buildTrendsHTML('dr');
+  const dr=document.getElementById('drawer');
+  dr.style.height=SZ[curSz]+'px';
+  dr.classList.add('open');
+  setSize(curSz);
+  if(drawerChart){drawerChart.destroy();drawerChart=null;}
+  setTimeout(()=>{
+    drawerChart=makeChart('chart-dr');
+    animCounters(document.getElementById('d-body'));
+    animBars('mb1-dr','mb2-dr','mb3-dr');
+  },80);
 }
 
-function goBack() { showScreen('partners'); }
-
-function showTab(id, tab) {
-  document.querySelectorAll('#acq-tabs-c1 .acq-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-  tab.classList.add('active');
-  if (id === 'trends') {
-    document.getElementById('tab-trends').classList.add('active');
-    if (!chartInited) {
-      renderTrendsHTML('trends-content-c1', 'c1');
-      initChart('trendsChartc1');
-      chartInited = true;
-    }
-    animateCounters();
-    animateBars('barc11','barc12','barc13');
-  } else {
-    document.getElementById('tab-home').classList.add('active');
-  }
+function closeDrawer(){
+  const dr=document.getElementById('drawer');
+  dr.classList.remove('open');
+  dr.style.height='';
+  if(drawerChart){drawerChart.destroy();drawerChart=null;}
+  ['sm','md','lg'].forEach(s=>document.getElementById('sz-'+s).classList.remove('on'));
 }
 
-function openTrendsC2() {
-  const title = document.getElementById('acq-title-c2').textContent;
-  document.getElementById('trends-full-title').textContent = title + ' — Trends';
-  document.getElementById('trends-back-btn').onclick = () => showScreen('acquire');
-  renderTrendsHTML('trends-full-content', 'Full');
-  showScreen('trends-full');
-  setTimeout(() => { initChart('trendsChartFull'); animateCounters(); animateBars('barFull1','barFull2','barFull3'); }, 100);
+function setSize(s){
+  curSz=s;
+  const dr=document.getElementById('drawer');
+  if(dr.classList.contains('open')) dr.style.height=SZ[s]+'px';
+  ['sm','md','lg'].forEach(k=>document.getElementById('sz-'+k).classList.toggle('on',k===s));
+  setTimeout(()=>{if(drawerChart)drawerChart.resize();},300);
 }
 
-function openTrendsFromTable(name) {
-  document.getElementById('trends-full-title').textContent = name + ' — Trends';
-  document.getElementById('trends-back-btn').onclick = () => showScreen('partners');
-  renderTrendsHTML('trends-full-content', 'Full');
-  showScreen('trends-full');
-  setTimeout(() => { initChart('trendsChartFull'); animateCounters(); animateBars('barFull1','barFull2','barFull3'); }, 100);
-}
+// drag handle
+(function(){
+  let drag=false,sy=0,sh=0;
+  const handle=document.getElementById('d-handle');
+  const dr=document.getElementById('drawer');
+  handle.addEventListener('mousedown',e=>{
+    if(!dr.classList.contains('open'))return;
+    drag=true;sy=e.clientY;sh=dr.offsetHeight;
+    dr.style.transition='none';document.body.style.userSelect='none';
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!drag)return;
+    const h=Math.max(150,Math.min(window.innerHeight-250,sh+(sy-e.clientY)));
+    dr.style.height=h+'px';
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!drag)return;
+    drag=false;document.body.style.userSelect='';
+    dr.style.transition='height .28s cubic-bezier(0.4,0,0.2,1)';
+    if(drawerChart)drawerChart.resize();
+  });
+})();
 
-function renderTrendsHTML(containerId, sfx) {
-  const c = document.getElementById(containerId);
-  c.innerHTML = `
-  <div class="kpi-row">
-    <div class="kpi-card"><div class="kpi-lbl">Today's total revenue</div><div class="kpi-val yellow"><span class="count-up" data-target="3029.01" data-prefix="$" data-decimals="2">$0.00</span></div>
-      <div class="mini-bars"><div class="mini-bar" id="bar${sfx}1" style="height:0;background:var(--yellow)"></div><div class="mini-bar" id="bar${sfx}2" style="height:0;background:var(--green)"></div><div class="mini-bar" id="bar${sfx}3" style="height:0;background:var(--red)"></div></div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Yesterday</div><div class="kpi-val"><span class="count-up" data-target="2731.22" data-prefix="$" data-decimals="2">$0.00</span></div><div class="kpi-badge up"><span class="material-icons" style="font-size:13px">arrow_upward</span>10.9%</div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Previous week</div><div class="kpi-val"><span class="count-up" data-target="2966.84" data-prefix="$" data-decimals="2">$0.00</span></div><div class="kpi-badge up"><span class="material-icons" style="font-size:13px">arrow_upward</span>2.1%</div></div>
-  </div>
-  <div class="kpi-row" style="margin-bottom:20px">
-    <div class="kpi-card"><div class="kpi-lbl">EPL</div><div class="kpi-val red"><span class="count-up" data-target="0.02" data-decimals="2">0.00</span></div><div class="kpi-icon"><span class="material-icons-outlined" style="color:#f44336;font-size:38px">info</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">0.01</span><span class="kpi-pct pos">100%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">0.02</span><span class="kpi-pct zero">0%</span></div></div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Applications</div><div class="kpi-val cyan"><span class="count-up" data-target="191597" data-decimals="0">0</span></div><div class="kpi-icon"><span class="material-icons" style="color:var(--cyan);font-size:38px">trending_up</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">202,429</span><span class="kpi-pct neg">-5.35%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">188,007</span><span class="kpi-pct pos">1.91%</span></div></div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Redirect Rate</div><div class="kpi-val yellow"><span class="count-up" data-target="71.93" data-suffix="%" data-decimals="2">0.00%</span></div><div class="kpi-icon"><span class="material-icons" style="color:var(--yellow);font-size:38px">swap_horiz</span></div><div class="kpi-sub"><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Day:</span><span class="kpi-bubble">72.12%</span><span class="kpi-pct neg">-0.26%</span></div><div class="kpi-sub-item"><span style="color:#888;font-size:11px">Pr. Week:</span><span class="kpi-bubble">69.88%</span><span class="kpi-pct pos">2.93%</span></div></div></div>
-  </div>
-  <div class="chart-section">
-    <div class="chart-hdr"><div class="chart-title">2 Weeks (Applications / Revenue / Redirect / EPL)</div><span class="material-icons-outlined" style="color:#555;font-size:18px;cursor:pointer">info</span></div>
-    <div class="chart-legend">
-      <div class="legend-item" onclick="toggleDS(0,'cb0${sfx}')"><div class="legend-cb" id="cb0${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#ff9800;border-color:#ff9800"></div><span>Applications</span></div>
-      <div class="legend-item" onclick="toggleDS(1,'cb1${sfx}')"><div class="legend-cb" id="cb1${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#8bc34a;border-color:#8bc34a"></div><span>Revenue</span></div>
-      <div class="legend-item" onclick="toggleDS(2,'cb2${sfx}')"><div class="legend-cb" id="cb2${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#00bcd4;border-color:#00bcd4"></div><span>Redirect</span></div>
-      <div class="legend-item" onclick="toggleDS(3,'cb3${sfx}')"><div class="legend-cb" id="cb3${sfx}"><span class="material-icons">check</span></div><div class="legend-dot" style="background:#f44336;border-color:#f44336"></div><span>EPL</span></div>
+// ═══ TRENDS HTML BUILDER ═══
+// suffix = unique ID suffix so drawer & page never share same element IDs
+function buildTrendsHTML(sfx){
+  return `
+    <div class="krow">
+      <div class="kcard"><div class="klbl">Today's total revenue</div><div class="kval y"><span class="cu" data-t="3029.01" data-p="$" data-d="2">$0.00</span></div><div class="mbars"><div class="mb" id="mb1-${sfx}" style="height:0;background:var(--yellow)"></div><div class="mb" id="mb2-${sfx}" style="height:0;background:var(--green)"></div><div class="mb" id="mb3-${sfx}" style="height:0;background:var(--red)"></div></div></div>
+      <div class="kcard"><div class="klbl">Yesterday</div><div class="kval"><span class="cu" data-t="2731.22" data-p="$" data-d="2">$0.00</span></div><div class="kbadge"><span class="material-icons" style="font-size:12px">arrow_upward</span>10.9%</div></div>
+      <div class="kcard"><div class="klbl">Previous week</div><div class="kval"><span class="cu" data-t="2966.84" data-p="$" data-d="2">$0.00</span></div><div class="kbadge"><span class="material-icons" style="font-size:12px">arrow_upward</span>2.1%</div></div>
     </div>
-    <div class="chart-wrap"><canvas id="trendsChart${sfx}"></canvas></div>
-    <div class="sum-row">
-      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#ff9800"></div><span class="material-icons" style="color:#555;font-size:20px">arrow_forward</span></div><div class="sum-val">191,597</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+1.91%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+2.22%</span></div></div></div>
-      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#8bc34a"></div><span class="material-icons" style="color:var(--green);font-size:20px">trending_up</span></div><div class="sum-val">$3,029.01</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+2.10%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+15.55%</span></div></div></div>
-      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#00bcd4"></div><span class="material-icons" style="color:var(--red);font-size:20px">trending_down</span></div><div class="sum-val">71.93%</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct pos">+2.93%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct neg">-3.29%</span></div></div></div>
-      <div class="sum-card"><div class="sum-top"><div class="sum-dot" style="background:#f44336"></div><span class="material-icons" style="color:var(--green);font-size:20px">trending_up</span></div><div class="sum-val">$0.02</div><div class="sum-compare"><div class="sum-col"><span class="sum-col-lbl">vs 7 days</span><span class="sum-col-pct zero">+0.00%</span></div><div class="sum-col"><span class="sum-col-lbl">vs 14 days</span><span class="sum-col-pct pos">+100.00%</span></div></div></div>
+    <div class="krow" style="margin-bottom:16px">
+      <div class="kcard"><div class="klbl">EPL</div><div class="kval r"><span class="cu" data-t="0.02" data-d="2">0.00</span></div><div class="kico"><span class="material-icons-outlined" style="color:var(--red);font-size:32px">info</span></div><div class="ksub"><div class="ksi"><span style="color:#888;font-size:10px">Pr. Day:</span><span class="kbub">0.01</span><span class="kp pos">100%</span></div><div class="ksi"><span style="color:#888;font-size:10px">Pr. Week:</span><span class="kbub">0.02</span><span class="kp z">0%</span></div></div></div>
+      <div class="kcard"><div class="klbl">Applications</div><div class="kval c"><span class="cu" data-t="191597" data-d="0">0</span></div><div class="kico"><span class="material-icons" style="color:var(--cyan);font-size:32px">trending_up</span></div><div class="ksub"><div class="ksi"><span style="color:#888;font-size:10px">Pr. Day:</span><span class="kbub">202,429</span><span class="kp neg">-5.35%</span></div><div class="ksi"><span style="color:#888;font-size:10px">Pr. Week:</span><span class="kbub">188,007</span><span class="kp pos">1.91%</span></div></div></div>
+      <div class="kcard"><div class="klbl">Redirect Rate</div><div class="kval y"><span class="cu" data-t="71.93" data-s="%" data-d="2">0%</span></div><div class="kico"><span class="material-icons" style="color:var(--yellow);font-size:32px">swap_horiz</span></div><div class="ksub"><div class="ksi"><span style="color:#888;font-size:10px">Pr. Day:</span><span class="kbub">72.12%</span><span class="kp neg">-0.26%</span></div><div class="ksi"><span style="color:#888;font-size:10px">Pr. Week:</span><span class="kbub">69.88%</span><span class="kp pos">2.93%</span></div></div></div>
     </div>
-  </div>`;
+    <div class="csec">
+      <div class="chdr"><span class="ctitle">2 Weeks (Applications / Revenue / Redirect / EPL)</span><span class="material-icons-outlined" style="color:#555;font-size:16px">info</span></div>
+      <div class="cleg">
+        <div class="cli" onclick="toggleDS('${sfx}',0,'cb0-${sfx}')"><div class="ccb" id="cb0-${sfx}"><span class="material-icons">check</span></div><div class="cdot" style="background:#ff9800;border-color:#ff9800"></div><span>Applications</span></div>
+        <div class="cli" onclick="toggleDS('${sfx}',1,'cb1-${sfx}')"><div class="ccb" id="cb1-${sfx}"><span class="material-icons">check</span></div><div class="cdot" style="background:#8bc34a;border-color:#8bc34a"></div><span>Revenue</span></div>
+        <div class="cli" onclick="toggleDS('${sfx}',2,'cb2-${sfx}')"><div class="ccb" id="cb2-${sfx}"><span class="material-icons">check</span></div><div class="cdot" style="background:#00bcd4;border-color:#00bcd4"></div><span>Redirect</span></div>
+        <div class="cli" onclick="toggleDS('${sfx}',3,'cb3-${sfx}')"><div class="ccb" id="cb3-${sfx}"><span class="material-icons">check</span></div><div class="cdot" style="background:#f44336;border-color:#f44336"></div><span>EPL</span></div>
+      </div>
+      <div class="cwrap" style="height:${sfx==='tp'?'280':'200'}px"><canvas id="chart-${sfx}"></canvas></div>
+      <div class="srow">
+        <div class="sc"><div class="stop"><div class="sdotb" style="background:#ff9800"></div><span class="material-icons" style="color:#555;font-size:17px">arrow_forward</span></div><div class="sval">191,597</div><div class="scmp"><div class="scol"><span class="sclbl">vs 7 days</span><span class="scpct pos">+1.91%</span></div><div class="scol"><span class="sclbl">vs 14 days</span><span class="scpct pos">+2.22%</span></div></div></div>
+        <div class="sc"><div class="stop"><div class="sdotb" style="background:#8bc34a"></div><span class="material-icons" style="color:var(--green);font-size:17px">trending_up</span></div><div class="sval">$3,029.01</div><div class="scmp"><div class="scol"><span class="sclbl">vs 7 days</span><span class="scpct pos">+2.10%</span></div><div class="scol"><span class="sclbl">vs 14 days</span><span class="scpct pos">+15.55%</span></div></div></div>
+        <div class="sc"><div class="stop"><div class="sdotb" style="background:#00bcd4"></div><span class="material-icons" style="color:var(--red);font-size:17px">trending_down</span></div><div class="sval">71.93%</div><div class="scmp"><div class="scol"><span class="sclbl">vs 7 days</span><span class="scpct pos">+2.93%</span></div><div class="scol"><span class="sclbl">vs 14 days</span><span class="scpct neg">-3.29%</span></div></div></div>
+        <div class="sc"><div class="stop"><div class="sdotb" style="background:#f44336"></div><span class="material-icons" style="color:var(--green);font-size:17px">trending_up</span></div><div class="sval">$0.02</div><div class="scmp"><div class="scol"><span class="sclbl">vs 7 days</span><span class="scpct z">+0.00%</span></div><div class="scol"><span class="sclbl">vs 14 days</span><span class="scpct pos">+100.00%</span></div></div></div>
+      </div>
+    </div>`;
 }
 
-const chartData = {
-  labels:['17Feb','18Feb','19Feb','20Feb','21Feb','22Feb','23Feb','24Feb','25Feb','26Feb','27Feb','28Feb','01Mar','02Mar','03Mar'],
-  app:[190000,245000,210000,205000,200000,195000,145000,140000,185000,178000,215000,165000,125000,200000,191597],
-  rev:[2200,2800,2500,2450,2300,2250,1800,1750,2100,2050,2400,1900,1600,2800,3029],
-  red:[75,78,76,75,77,74,73,72,74,73,76,71,70,76,71.93],
-  epl:[0.01,0.015,0.012,0.013,0.01,0.012,0.008,0.009,0.015,0.013,0.018,0.011,0.009,0.02,0.02]
-};
-
-function initChart(canvasId) {
-  if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  chartInstance = new Chart(canvas.getContext('2d'), {
-    type: 'line',
-    data: { labels: chartData.labels, datasets: [
-      {label:'Applications',data:chartData.app,borderColor:'#ff9800',backgroundColor:'transparent',borderWidth:2.5,pointBackgroundColor:'#ff9800',pointRadius:5,tension:.4,yAxisID:'y'},
-      {label:'Revenue',data:chartData.rev.map(v=>v*55),borderColor:'#8bc34a',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#8bc34a',pointRadius:5,tension:.4,yAxisID:'y'},
-      {label:'Redirect',data:chartData.red.map(v=>v*2700),borderColor:'#00bcd4',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#00bcd4',pointRadius:5,tension:.4,yAxisID:'y'},
-      {label:'EPL',data:chartData.epl.map(v=>v*5000),borderColor:'#f44336',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#f44336',pointRadius:4,tension:.4,yAxisID:'y'}
+// ═══ CHART FACTORY ═══
+function makeChart(canvasId){
+  const cv=document.getElementById(canvasId);
+  if(!cv)return null;
+  return new Chart(cv.getContext('2d'),{
+    type:'line',
+    data:{labels:CHART_LABELS,datasets:[
+      {data:CHART_APP,borderColor:'#ff9800',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#ff9800',pointRadius:3,tension:.4,yAxisID:'y'},
+      {data:CHART_REV.map(v=>v*55),borderColor:'#8bc34a',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#8bc34a',pointRadius:3,tension:.4,yAxisID:'y'},
+      {data:CHART_RED.map(v=>v*2700),borderColor:'#00bcd4',backgroundColor:'transparent',borderWidth:2,pointBackgroundColor:'#00bcd4',pointRadius:3,tension:.4,yAxisID:'y'},
+      {data:CHART_EPL.map(v=>v*5000),borderColor:'#f44336',backgroundColor:'transparent',borderWidth:1.5,pointBackgroundColor:'#f44336',pointRadius:2,tension:.4,yAxisID:'y'}
     ]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400,easing:'easeInOutQuart'},interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#2a2a2a',borderColor:'#444',borderWidth:1,titleColor:'#ccc',bodyColor:'#fff',padding:10,
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#2a2a2a',borderColor:'#333',borderWidth:1,titleColor:'#ccc',bodyColor:'#ddd',padding:8,
         callbacks:{label(c){const i=c.datasetIndex,r=c.raw;
-          if(i===0)return` Applications: ${Math.round(r).toLocaleString()}`;
-          if(i===1)return` Revenue: $${(r/55).toFixed(2)}`;
+          if(i===0)return` Apps: ${Math.round(r).toLocaleString()}`;
+          if(i===1)return` Rev: $${(r/55).toFixed(2)}`;
           if(i===2)return` Redirect: ${(r/2700).toFixed(2)}%`;
           return` EPL: $${(r/5000).toFixed(3)}`;
         }}}},
-      scales:{y:{display:true,grid:{color:'#252525'},ticks:{color:'#555',font:{family:'Montserrat',size:10},callback(v){return v>=1000?(v/1000).toFixed(0)+'k':v}}},
-        x:{grid:{color:'#252525'},ticks:{color:'#555',font:{family:'Montserrat',size:10}}}}}
+      scales:{y:{display:true,grid:{color:'#222'},ticks:{color:'#555',font:{family:'Montserrat',size:9},callback(v){return v>=1000?(v/1000).toFixed(0)+'k':v}}},
+        x:{grid:{color:'#222'},ticks:{color:'#555',font:{family:'Montserrat',size:9}}}}}
   });
 }
 
-function toggleDS(idx, cbId) {
-  if (!chartInstance) return;
-  const meta = chartInstance.getDatasetMeta(idx);
-  meta.hidden = !meta.hidden;
-  const cb = document.getElementById(cbId);
-  if (cb) cb.classList.toggle('off', meta.hidden);
-  chartInstance.update();
+// ═══ LEGEND TOGGLE ═══
+function toggleDS(sfx,idx,cbId){
+  const c=sfx==='dr'?drawerChart:trendsChart;
+  if(!c)return;
+  const m=c.getDatasetMeta(idx);m.hidden=!m.hidden;
+  const cb=document.getElementById(cbId);if(cb)cb.classList.toggle('off',m.hidden);
+  c.update();
 }
 
-function animateCounters() {
-  document.querySelectorAll('.count-up').forEach(el => {
-    const target = parseFloat(el.dataset.target), prefix = el.dataset.prefix||'', suffix = el.dataset.suffix||'', dec = parseInt(el.dataset.decimals)||0;
-    const dur = 1600, start = performance.now();
-    function step(now) {
-      const p = Math.min((now-start)/dur,1), ease = p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, val = target*ease;
-      el.textContent = prefix+(dec>0?val.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):Math.round(val).toLocaleString('en-US'))+suffix;
-      if (p<1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+// ═══ COUNTER ANIMATION ═══
+function animCounters(container){
+  (container||document).querySelectorAll('.cu').forEach(el=>{
+    const t=parseFloat(el.dataset.t),p=el.dataset.p||'',s=el.dataset.s||'',d=parseInt(el.dataset.d)||0;
+    const dur=1400,st=performance.now();
+    (function step(now){
+      const pct=Math.min((now-st)/dur,1),e=pct<.5?2*pct*pct:1-Math.pow(-2*pct+2,2)/2,v=t*e;
+      el.textContent=p+(d>0?v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):Math.round(v).toLocaleString('en-US'))+s;
+      if(pct<1)requestAnimationFrame(step);
+    })(performance.now());
   });
 }
 
-function animateBars(b1, b2, b3) {
-  [{id:b1,h:'30px'},{id:b2,h:'44px'},{id:b3,h:'22px'}].forEach((t,i) => setTimeout(() => {
-    const el = document.getElementById(t.id); if (el) el.style.height = t.h;
-  }, 300+i*120));
+// ═══ BARS ANIMATION ═══
+function animBars(b1,b2,b3){
+  [{id:b1,h:'26px'},{id:b2,h:'38px'},{id:b3,h:'18px'}].forEach((t,i)=>
+    setTimeout(()=>{const el=document.getElementById(t.id);if(el)el.style.height=t.h;},250+i*100));
 }
 
-// Init
+// ═══ INIT ═══
 buildTable();
 </script>
 </body>
